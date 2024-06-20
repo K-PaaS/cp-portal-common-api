@@ -13,8 +13,9 @@ cp:
   clusterName: cp-cluster
 
 keycloak:
-  cpRealm: ${KEYCLOAK_CP_REALM}
+  cpRealmId: ${KEYCLOAK_CP_REALM_ID}
   clusterAdminRole: cp-cluster-admin-role
+
 ---
 spring:
   config:

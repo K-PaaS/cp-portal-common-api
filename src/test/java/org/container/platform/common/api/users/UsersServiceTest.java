@@ -60,8 +60,8 @@ public class UsersServiceTest {
     private static final String ENCODED_PASSWORD = "$2a$10$escP4RztAu6YnXIv0mEqsu/7o2ma/5eVnRs7RuGS7022CDHQV9s.6";
     private static final String CLUSTER_ADMIN = "CLUSTER_ADMIN";
 
-    @Value("${keycloak.cpRealm}")
-    private String keycloakCpRealm;
+    @Value("${keycloak.cpRealmId}")
+    private String keycloakCpRealmId;
 
     @Value("${cp.defaultNamespace}")
     private String defaultNamespace;
@@ -339,7 +339,7 @@ public class UsersServiceTest {
 
     @Test
     public void getUsers() {
-        when(keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealm)).thenReturn(keycloakUsersList);
+        when(keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealmId)).thenReturn(keycloakUsersList);
         when(usersRepository.findAllByClusterIdAndCpNamespaceAndUserAuthId(CLUSTER, NAMESPACE, USER_AUTH_ID)).thenReturn(usersList);
         Users users = usersService.getUsers(CLUSTER, NAMESPACE, USER_AUTH_ID);
     }
@@ -448,7 +448,7 @@ public class UsersServiceTest {
         List<KeycloakUsers> keycloakList = new ArrayList<>();
         KeycloakUsers keycloakUsers = new KeycloakUsers();
         keycloakList.add(keycloakUsers);
-        when(keycloakUsersService.getKeycloakUser(keycloakCpRealm, USER_AUTH_ID, USER_ID)).thenReturn(keycloakList);
+        when(keycloakUsersService.getKeycloakUser(keycloakCpRealmId, USER_AUTH_ID, USER_ID)).thenReturn(keycloakList);
         when(usersRepository.findAllByUserType(Constants.AUTH_SUPER_ADMIN)).thenReturn(usersList);
 
         try {
@@ -500,7 +500,7 @@ public class UsersServiceTest {
 
     @Test
     public void getUserRegisterCheck() {
-        when(keycloakUsersService.getKeycloakUser(keycloakCpRealm, USER_AUTH_ID, USER_ID)).thenReturn(keycloakUsersList);
+        when(keycloakUsersService.getKeycloakUser(keycloakCpRealmId, USER_AUTH_ID, USER_ID)).thenReturn(keycloakUsersList);
         when(usersRepository.getUsersDefaultInfo(Constants.HOST_CLUSTER_TYPE, USER_AUTH_ID, defaultNamespace, Constants.AUTH_USER)).thenReturn(usersList);
         try {
             UsersList usersList = usersService.getUserRegisterCheck(USER_ID, USER_AUTH_ID);
@@ -534,7 +534,7 @@ public class UsersServiceTest {
     @Test
     public void getUsersByNamespaceAndUserIdAndUserType() {
         when(usersRepository.findAllByCpNamespaceAndUserIdAndUserType(NAMESPACE, USER_ID, USER_TYPE_AUTH_USER)).thenReturn(usersList);
-        when(keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealm)).thenReturn(keycloakUsersList);
+        when(keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealmId)).thenReturn(keycloakUsersList);
 
         try {
             usersService.getUsersByNamespaceAndUserIdAndUserType(NAMESPACE, USER_ID, Constants.AUTH_USER);

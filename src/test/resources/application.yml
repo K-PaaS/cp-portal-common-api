@@ -9,7 +9,7 @@ cpNamespace:
   defaultNamespace: temp-namespace         #k-paas-container-platform-temp-namespace
 
 keycloak:
-  cpRealm: test
+  cpRealmId: test
 
 ---
 spring:

@@ -35,8 +35,8 @@ public class UsersService {
     @Value("${cp.defaultNamespace}")
     private String defaultNamespace;
 
-    @Value("${keycloak.cpRealm}")
-    private String keycloakCpRealm;
+    @Value("${keycloak.cpRealmId}")
+    private String keycloakCpRealmId;
 
     @Value("${keycloak.clusterAdminRole}")
     private String keycloakCpAdminRole;
@@ -427,7 +427,7 @@ public class UsersService {
 
 
     public void checkKeycloakUser(String userId, String userAuthId) {
-        List<KeycloakUsers> keycloakUser = keycloakUsersService.getKeycloakUser(keycloakCpRealm, userAuthId, userId);
+        List<KeycloakUsers> keycloakUser = keycloakUsersService.getKeycloakUser(keycloakCpRealmId, userAuthId, userId);
         if (keycloakUser.size() < 1) {
             // KEYCLOAK에 등록되지 않은경우, 메세지 반환 처리
             throw new ResultStatusException(Constants.USER_NOT_REGISTERED_IN_KEYCLOAK_MESSAGE);
@@ -443,7 +443,7 @@ public class UsersService {
     public UsersList compareKeycloakUser(UsersList usersList) {
 
         // keycloak 사용자 목록 조회
-        List<KeycloakUsers> keycloakUsersList = keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealm);
+        List<KeycloakUsers> keycloakUsersList = keycloakUsersService.getKeycloakUserListByRealm(keycloakCpRealmId);
 
         // keycloak 사용자 UserName Map
         List<String> keycloakUserNameList = keycloakUsersList.stream().map(KeycloakUsers::getUsername).collect(Collectors.toList());
