@@ -8,6 +8,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
 cp:
   defaultNamespace: cp-portal-temp-namespace
   clusterName: cp-cluster
