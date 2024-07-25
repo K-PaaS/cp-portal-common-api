@@ -55,7 +55,7 @@ public class CloudAccountsController {
      */
     @ApiOperation(value="CloudAccounts 정보 조회(Get CloudAccounts Info)", nickname="getCloudAccounts")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "클라우드 계정 아이디", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "id", value = "클라우드 계정 아이디", required = true, dataType = "Long", paramType = "path", dataTypeClass = Long.class)
     })
     @GetMapping(value = "/{id:.+}")
     public CloudAccounts getCloudAccounts(@PathVariable Long id){
@@ -71,7 +71,7 @@ public class CloudAccountsController {
      */
     @ApiOperation(value="CloudAccounts 저장(Create CloudAccounts)", nickname="createCloudAccounts")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cloudAccounts", value = "클라우드 계정 정보", required = true, dataType = "CloudAccounts", paramType = "body")
+            @ApiImplicitParam(name = "cloudAccounts", value = "클라우드 계정 정보", required = true, dataType = "CloudAccounts", paramType = "body", dataTypeClass = CloudAccounts.class)
     })
     @PostMapping
     public CloudAccounts createCloudAccounts(@RequestBody CloudAccounts cloudAccounts) {
@@ -86,7 +86,7 @@ public class CloudAccountsController {
      */
     @ApiOperation(value="CloudAccounts 삭제(Delete CloudAccounts)", nickname="deleteCloudAccounts")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "클라우드 계정 아이디", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "id", value = "클라우드 계정 아이디", required = true, dataType = "Long", paramType = "path", dataTypeClass = Long.class)
     })
     @DeleteMapping(value = "/{id:.+}")
     public CloudAccounts deleteCloudAccounts(@PathVariable Long id) {
@@ -101,7 +101,7 @@ public class CloudAccountsController {
      */
     @ApiOperation(value="CloudAccounts 수정(Delete CloudAccounts)", nickname="deleteCloudAccounts")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cloudAccounts", value = "클라우드 계정 정보", required = true, dataType = "CloudAccounts", paramType = "body")
+            @ApiImplicitParam(name = "cloudAccounts", value = "클라우드 계정 정보", required = true, dataType = "CloudAccounts", paramType = "body", dataTypeClass = CloudAccounts.class)
     })
     @PatchMapping
     public CloudAccounts updateCloudAccounts(@RequestBody CloudAccounts cloudAccounts) {
