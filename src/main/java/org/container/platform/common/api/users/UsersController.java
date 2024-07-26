@@ -48,8 +48,8 @@ public class UsersController {
      */
     @ApiOperation(value = "Users 등록(Create Users)", nickname = "createUsers")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body"),
-            @ApiImplicitParam(name = "isFirst", value = "사용자 첫등록 유무", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body", dataTypeClass = Users.class),
+            @ApiImplicitParam(name = "isFirst", value = "사용자 첫등록 유무", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @PostMapping(value = "/users")
     public Users createUsers(@RequestBody Users users,
@@ -66,7 +66,7 @@ public class UsersController {
      */
     @ApiOperation(value = "Users 권한 변경 저장(Modify Users)", nickname = "modifyUsers")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body")
+            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body", dataTypeClass = Users.class)
     })
     @PutMapping(value = "/users")
     public Users modifyUsers(@RequestBody Users users) {
@@ -94,7 +94,7 @@ public class UsersController {
      */
     @ApiOperation(value = "전체 Users 목록 조회(Get All Users list)", nickname = "getUsersList")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping(value = "/users")
     public UsersList getUsersList(@RequestParam(name = "namespace") String namespace) {
@@ -112,8 +112,8 @@ public class UsersController {
      */
     @ApiOperation(value = "Admin Portal 활성화 여부에 따른 사용자 목록 조회(Get Users list of admin portal)", nickname = "getUsersListAllByCluster")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping(value = "/clusters/{cluster:.+}/namespaces/{namespace:.+}/usersList")
     public UsersDetailsList getUsersListAllByCluster(@PathVariable(value = "cluster") String cluster,
@@ -136,7 +136,7 @@ public class UsersController {
      */
     @ApiOperation(value = "Users 상세 조회(Get Users detail)", nickname = "getUserDetails")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/users/{userId:.+}/{userAuthId:.+}")
     public UsersList getUserDetails(@PathVariable(value = "userId") String userId,
@@ -155,9 +155,9 @@ public class UsersController {
      */
     @ApiOperation(value = "Namespace 와 UserId로 Users 단 건 상세 조회(Get Users namespace userId detail)", nickname = "getUsers")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "userAuthId", value = "User 인증 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userAuthId", value = "User 인증 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/clusters/{cluster:.+}/namespaces/{namespace:.+}/users/{userAuthId:.+}")
     public Users getUsers(@PathVariable(value = "cluster") String cluster,
@@ -180,7 +180,7 @@ public class UsersController {
      */
     @ApiOperation(value = "Users 삭제(Delete Users)", nickname = "deleteUsers")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "User 아이디", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "id", value = "User 아이디", required = true, dataType = "Long", paramType = "path", dataTypeClass = Long.class)
     })
     @DeleteMapping(value = "/users/{id:.+}")
     public ResultStatus deleteUsers(@PathVariable(value = "id") Long id) {
@@ -198,9 +198,9 @@ public class UsersController {
      */
     @ApiOperation(value = "Users 단 건 삭제(Delete A User)", nickname = "deleteUsersByOne")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @DeleteMapping("/clusters/{cluster:.+}/namespaces/{namespace:.+}/users/{userId:.+}")
     public ResultStatus deleteUsersByOne(@PathVariable(value = "cluster") String cluster,
@@ -219,8 +219,8 @@ public class UsersController {
      */
     @ApiOperation(value = "해당 Namespace의 Namespace 관리자 상세 조회(Get Namespace Admin Users detail)", nickname = "getUsersByNamespaceAndNsAdmin")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/clusters/{cluster:.+}/namespaces/{namespace:.+}")
     public Users getUsersByNamespaceAndNsAdmin(@PathVariable(value = "cluster") String cluster,
@@ -238,8 +238,8 @@ public class UsersController {
      */
     @ApiOperation(value = "CLUSTER_ADMIN 권한을 가진 운영자 상세 조회(Get Cluster Admin's info)", nickname = "getUsersByClusterNameAndUserIdAndUserType")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userId", value = "User 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/clusters/{cluster:.+}/users/{userId:.+}/userType")
     public Users getUsersByClusterNameAndUserIdAndUserType(@PathVariable(value = "cluster") String cluster,
@@ -257,8 +257,8 @@ public class UsersController {
      */
     @ApiOperation(value = "TEMP NAMESPACE 만 속한 사용자 조회 (Get users who belong to Temp Namespace only)", nickname = "getUserListOnlyTempNamesapce")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "searchParam", value = "검색 조건", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
     })
     @GetMapping("/clusters/{cluster:.+}/users/tempNamespace")
     public UsersList getUserListOnlyTempNamesapce(@PathVariable(value = "cluster") String cluster,
@@ -275,8 +275,8 @@ public class UsersController {
      */
     @ApiOperation(value = "사용자 상세 조회(Get user info details)", nickname = "getUserInfoDetails")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "userType", value = "사용자 타입", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userType", value = "사용자 타입", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping(value = "/clusters/{cluster:.+}/users/{userAuthId:.+}/details")
     public UsersDetails getUserInfoDetails(@PathVariable(value = "cluster") String cluster,
@@ -292,10 +292,10 @@ public class UsersController {
 
     @ApiOperation(value = "하나의 Cluster 내 여러 Namespace 에 속한 User 에 대한 상세 조회(Get Users Access Info)", nickname = "getUsersAccessInfo")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userAuthId", value = "사용자 인증 아이디", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "cluster", value = "클러스터", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "userType", value = "사용자 타입", required = false, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "userAuthId", value = "사용자 인증 아이디", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "cluster", value = "클러스터", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userType", value = "사용자 타입", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping(value = "/cluster/info/all/user/details")
     public Object getUsersAccessInfo(@RequestParam(required = true) String userAuthId,
@@ -315,7 +315,7 @@ public class UsersController {
      */
     @ApiOperation(value = "네임스페이스 관리자 체크 조회(Get user list whether user is namespace admin or not)", nickname = "getUserIsNamespaceAdminCheck")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping(value = "/clusters/all/namespaces/{namespace:.+}/adminCheck")
     public UsersList getUserIsNamespaceAdminCheck(@PathVariable(value = "namespace") String namespace) {
@@ -337,9 +337,9 @@ public class UsersController {
      */
     @ApiOperation(value = "사용자 아이디, 사용자 인증 아이디, 네임스페이스를 통한 Users 삭제 (Delete Users by userId, userAuthId and namespace)", nickname = "deleteUsersByUserIdAndUserAuthIdAndNamespace")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "userAuthId", value = "사용자 인증 아이디", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userAuthId", value = "사용자 인증 아이디", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @DeleteMapping(value = "/cluster/all/user/delete")
     public ResultStatus deleteUsersByUserIdAndUserAuthIdAndNamespace(@RequestParam(required = true) String userId,
@@ -357,7 +357,7 @@ public class UsersController {
      */
     @ApiOperation(value = "클러스터 관리자 삭제 (Delete Cluster Admin User)", nickname = "deleteClusterAdmin")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
     })
     @DeleteMapping("/clusters/{cluster:.+}/admin/delete")
     public ResultStatus deleteClusterAdmin(@PathVariable(value = "cluster") String cluster) {
@@ -374,7 +374,7 @@ public class UsersController {
      */
     @ApiOperation(value = "로그인 기능을 위한 Users 상세 조회(Get Users detail for login)", nickname = "getUserDetailsForLogin")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "유저 Id", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "userId", value = "유저 Id", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/login/users/{userId:.+}")
     public Users getUserDetailsForLogin(@PathVariable(value = "userId") String userId) {
@@ -391,9 +391,9 @@ public class UsersController {
      */
     @ApiOperation(value = "User 등록여부 조회(Check User Registration)", nickname = "checkUserRegister")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "User ID", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "userAuthId", value = "Keycloak User ID", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "userType", value = "User Type", required = true, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "userId", value = "User ID", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userAuthId", value = "Keycloak User ID", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "userType", value = "User Type", required = true, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping("/userRegisterCheck")
     public UsersList checkUserRegister(@RequestParam(required = false, defaultValue = "") String userId,
@@ -416,7 +416,7 @@ public class UsersController {
      */
     @ApiOperation(value = "User 등록(Sign up user)", nickname = "signUpUser")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body")
+            @ApiImplicitParam(name = "users", value = "유저 정보", required = true, dataType = "Users", paramType = "body", dataTypeClass = Users.class)
     })
     @PostMapping(value = "/user/signUp")
     public ResultStatus signUpUser(@RequestBody Users users) {
@@ -492,7 +492,7 @@ public class UsersController {
      */
     @ApiOperation(value = "클러스터 관리자 목록 조회(Get Cluster Admin List)", nickname = "getClusterAdminList")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "searchName", value = "userId 검색", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "searchName", value = "userId 검색", required = false, dataType = "String", paramType = "query", dataTypeClass = String.class)
     })
     @GetMapping(value = "/cluster/{cluster:.+}/admin")
     public UsersList getClusterAdminList(@PathVariable String cluster,
@@ -535,8 +535,8 @@ public class UsersController {
      */
     @ApiOperation(value = "클러스터 내 특정 네임스페이스 사용자 전체 삭제 (Delete Namespace All User)", nickname = "deleteAllUsersByClusterAndNamespace")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @DeleteMapping("/clusters/{cluster:.+}/namespaces/{namespace:.+}/users")
     public ResultStatus deleteAllUsersByClusterAndNamespace(@PathVariable(value = "cluster") String cluster,
@@ -555,8 +555,8 @@ public class UsersController {
      */
     @ApiOperation(value = "클러스터 또는 클러스터 내 네임스페이스 사용자 전체 목록 조회 (Get Cluster or Namespace All Users List)", nickname = "getAllUsersByClusterAndNamespace")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "cluster", value = "클러스터 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "namespace", value = "네임스페이스 명", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping("/clusters/{cluster:.+}/namespaces/{namespace:.+}/users")
     public UsersList getAllUsersByClusterAndNamespace(@PathVariable(value = "cluster") String cluster,
