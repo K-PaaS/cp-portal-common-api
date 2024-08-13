@@ -1,11 +1,10 @@
 package org.container.platform.common.api.chaos;
 
-
-import org.container.platform.common.api.clusterResource.limitRanges.LimitRangesDefaultList;
 import org.container.platform.common.api.common.CommonService;
 import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,10 +16,12 @@ import java.util.List;
  * @since 2024.08.01
  **/
 @Service
-public class ResourceUsageOfChaosService {
+public class ChaosService {
 
     private final CommonService commonService;
+    private final StressChaosRepository stressChaosRepository;
     private final ResourceUsageOfChaosRepository resourceUsageOfChaosRepository;
+
 
     /**
      * Instantiates a new ResourceUsageOfChaos service
@@ -28,10 +29,29 @@ public class ResourceUsageOfChaosService {
      * @param resourceUsageOfChaosRepository the resourceUsageOfChaos Repository
      */
     @Autowired
-    public ResourceUsageOfChaosService(CommonService commonService, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
+    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
         this.commonService = commonService;
+        this.stressChaosRepository = stressChaosRepository;
         this.resourceUsageOfChaosRepository = resourceUsageOfChaosRepository;
     }
+
+    /**
+     *  StressChaos 정보 저장(Create stressChaos Info)
+     *
+     */
+    @Transactional
+    public StressChaos createStressChaos(StressChaos stressChaos) {
+        StressChaos stressChaosinfo = new StressChaos();
+        try {
+            stressChaosinfo = stressChaosRepository.save(stressChaos);
+        } catch (Exception e) {
+            stressChaosinfo.setResultMessage(e.getMessage());
+            return (StressChaos) commonService.setResultModel(stressChaosinfo, Constants.RESULT_STATUS_FAIL);
+        }
+        return (StressChaos) commonService.setResultModel(stressChaosinfo, Constants.RESULT_STATUS_SUCCESS);
+
+    }
+
 
     /**
      * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
@@ -40,13 +60,8 @@ public class ResourceUsageOfChaosService {
      */
     public ResourceUsageOfChaosList getResourceUsageOfChaosList() {
         List<ResourceUsageOfChaos> resourceUsageOfChaosList = resourceUsageOfChaosRepository.findAll();
-
-        System.out.println("resourceUsageOfChaosList : " + resourceUsageOfChaosList);
-
         ResourceUsageOfChaosList finalresourceUsageOfChaosList = new ResourceUsageOfChaosList();
         finalresourceUsageOfChaosList.setItems(resourceUsageOfChaosList);
-
-        System.out.println("finalresourceUsageOfChaosList : " + finalresourceUsageOfChaosList);
         return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
     }
 
