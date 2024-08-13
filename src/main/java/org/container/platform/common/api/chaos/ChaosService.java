@@ -16,22 +16,29 @@ import java.util.List;
  * @since 2024.08.01
  **/
 @Service
+@Transactional
 public class ChaosService {
 
     private final CommonService commonService;
     private final StressChaosRepository stressChaosRepository;
+    private final ChaosResourceRepository chaosResourceRepository;
+
     private final ResourceUsageOfChaosRepository resourceUsageOfChaosRepository;
+
 
 
     /**
      * Instantiates a new ResourceUsageOfChaos service
-     * @param commonService the common service
+     *
+     * @param commonService                  the common service
+     * @param chaosResourceRepository        the chaosResourceRepository Repository
      * @param resourceUsageOfChaosRepository the resourceUsageOfChaos Repository
      */
     @Autowired
-    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
+    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ChaosResourceRepository chaosResourceRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
         this.commonService = commonService;
         this.stressChaosRepository = stressChaosRepository;
+        this.chaosResourceRepository = chaosResourceRepository;
         this.resourceUsageOfChaosRepository = resourceUsageOfChaosRepository;
     }
 
@@ -39,7 +46,6 @@ public class ChaosService {
      *  StressChaos 정보 저장(Create stressChaos Info)
      *
      */
-    @Transactional
     public StressChaos createStressChaos(StressChaos stressChaos) {
         StressChaos stressChaosinfo = new StressChaos();
         try {
@@ -52,6 +58,30 @@ public class ChaosService {
 
     }
 
+    /**
+     * StressChaos chaosId 조회(Get StressChaos chaosId)
+     */
+    public StressChaos getStressChaosChaosId(String chaosName, String namespaces) {
+        StressChaos stressChaosData = stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
+        return stressChaosData;
+    }
+
+    /**
+     *  Chaos Resource 정보 저장(Create chaos resource Info)
+     *
+     */
+    public ChaosResource createChaosResource(ChaosResource chaosResource) {
+        StressChaos stressChaosData = this.getStressChaosChaosId(chaosResource.getChaosName(), chaosResource.getNamespaces());
+        chaosResource.setStressChaos(stressChaosData);
+        ChaosResource chaosResourceinfo = new ChaosResource();
+        try {
+            chaosResourceinfo = chaosResourceRepository.save(chaosResource);
+        } catch (Exception e) {
+            chaosResourceinfo.setResultMessage(e.getMessage());
+            return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_FAIL);
+        }
+        return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_SUCCESS);
+    }
 
     /**
      * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
@@ -64,5 +94,6 @@ public class ChaosService {
         finalresourceUsageOfChaosList.setItems(resourceUsageOfChaosList);
         return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
     }
+
 
 }

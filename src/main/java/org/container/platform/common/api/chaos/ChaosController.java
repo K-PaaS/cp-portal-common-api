@@ -45,6 +45,20 @@ public class ChaosController {
         return chaosService.createStressChaos(stressChaos);
     }
 
+    /**
+     * Chaos Resource 정보 저장(Create chaos resource Info)
+     *
+     * @param chaosResource the chaosResource
+     */
+    @ApiOperation(value="chaosResource 정보 저장(Create chaos resource Info)", nickname="createChaosResource")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chaosResource", value = "chaosResource 정보", required = true, dataType = "ChaosResource", paramType = "body", dataTypeClass = ChaosResource.class)
+    })
+    @PostMapping(value = "/chaosResource")
+    public ChaosResource createStressChaos(@RequestBody ChaosResource chaosResource) {
+        return chaosService.createChaosResource(chaosResource);
+    }
+
 
     /**
      * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
