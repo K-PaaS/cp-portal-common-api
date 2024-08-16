@@ -22,10 +22,7 @@ public class ChaosService {
     private final CommonService commonService;
     private final StressChaosRepository stressChaosRepository;
     private final ChaosResourceRepository chaosResourceRepository;
-
     private final ResourceUsageOfChaosRepository resourceUsageOfChaosRepository;
-
-
 
     /**
      * Instantiates a new ResourceUsageOfChaos service
@@ -43,6 +40,28 @@ public class ChaosService {
     }
 
     /**
+     *  StressChaos 정보 저장(Create StressChaos Info)
+     *
+     */
+    public StressChaosResourcesDataList createStressChaosResourcesData(StressChaosResourcesDataList stressChaosResourcesDataList) {
+        StressChaos stressChaos = new StressChaos();
+        stressChaos.setChaosName(stressChaosResourcesDataList.getStressChaos().getChaosName());
+        stressChaos.setNamespaces(stressChaosResourcesDataList.getStressChaos().getNamespaces());
+        stressChaos.setCreationTime(stressChaosResourcesDataList.getStressChaos().getCreationTime());
+        stressChaos.setEndTime(stressChaosResourcesDataList.getStressChaos().getEndTime());
+        stressChaos.setDuration(stressChaosResourcesDataList.getStressChaos().getDuration());
+
+        createStressChaos(stressChaos);
+
+        for(ChaosResource chaosResource : stressChaosResourcesDataList.getChaosResource()){
+            chaosResource.setStressChaos(getStressChaosChaosId(stressChaos.getChaosName(), stressChaos.getNamespaces()));
+            createChaosResource(chaosResource);
+        }
+
+        return (StressChaosResourcesDataList) commonService.setResultModel(stressChaosResourcesDataList, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
      *  StressChaos 정보 저장(Create stressChaos Info)
      *
      */
@@ -54,16 +73,15 @@ public class ChaosService {
             stressChaosinfo.setResultMessage(e.getMessage());
             return (StressChaos) commonService.setResultModel(stressChaosinfo, Constants.RESULT_STATUS_FAIL);
         }
-        return (StressChaos) commonService.setResultModel(stressChaosinfo, Constants.RESULT_STATUS_SUCCESS);
 
+        return (StressChaos) commonService.setResultModel(stressChaosinfo, Constants.RESULT_STATUS_SUCCESS);
     }
 
     /**
      * StressChaos chaosId 조회(Get StressChaos chaosId)
      */
     public StressChaos getStressChaosChaosId(String chaosName, String namespaces) {
-        StressChaos stressChaosData = stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
-        return stressChaosData;
+        return stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
     }
 
     /**
@@ -71,8 +89,6 @@ public class ChaosService {
      *
      */
     public ChaosResource createChaosResource(ChaosResource chaosResource) {
-        StressChaos stressChaosData = this.getStressChaosChaosId(chaosResource.getChaosName(), chaosResource.getNamespaces());
-        chaosResource.setStressChaos(stressChaosData);
         ChaosResource chaosResourceinfo = new ChaosResource();
         try {
             chaosResourceinfo = chaosResourceRepository.save(chaosResource);
@@ -80,6 +96,7 @@ public class ChaosService {
             chaosResourceinfo.setResultMessage(e.getMessage());
             return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_FAIL);
         }
+
         return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_SUCCESS);
     }
 
@@ -92,8 +109,7 @@ public class ChaosService {
         List<ResourceUsageOfChaos> resourceUsageOfChaosList = resourceUsageOfChaosRepository.findAll();
         ResourceUsageOfChaosList finalresourceUsageOfChaosList = new ResourceUsageOfChaosList();
         finalresourceUsageOfChaosList.setItems(resourceUsageOfChaosList);
+
         return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
     }
-
-
 }

@@ -31,33 +31,20 @@ public class ChaosController {
         this.chaosService = chaosService;
     }
 
-    /**
-     * StressChaos 정보 저장(Create stressChaos Info)
-     *
-     * @param stressChaos the stressChaos
-     */
-    @ApiOperation(value="stressChaos 정보 저장(Create stressChaos Info)", nickname="createStressChaos")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "stressChaos", value = "stressChaos 정보", required = true, dataType = "StressChaos", paramType = "body", dataTypeClass = StressChaos.class)
-    })
-    @PostMapping(value = "/stressChaos")
-    public StressChaos createStressChaos(@RequestBody StressChaos stressChaos) {
-        return chaosService.createStressChaos(stressChaos);
-    }
 
-    /**
-     * Chaos Resource 정보 저장(Create chaos resource Info)
-     *
-     * @param chaosResource the chaosResource
-     */
-    @ApiOperation(value="chaosResource 정보 저장(Create chaos resource Info)", nickname="createChaosResource")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "chaosResource", value = "chaosResource 정보", required = true, dataType = "ChaosResource", paramType = "body", dataTypeClass = ChaosResource.class)
-    })
-    @PostMapping(value = "/chaosResource")
-    public ChaosResource createStressChaos(@RequestBody ChaosResource chaosResource) {
-        return chaosService.createChaosResource(chaosResource);
-    }
+ /**
+  * StressChaos Resources Data 생성(Create StressChaos Resources Data)
+  *
+  * @StressChaosDataList the StressChaosDataList
+  */
+ @ApiOperation(value="StressChaos Resources Data 생성(Create StressChaos Resources Data)", nickname="createStressChaosResourcesData")
+ @ApiImplicitParams({
+         @ApiImplicitParam(name = "stressChaosResourcesData", value = "createStressChaosResourcesData 생성", required = true, dataType = "StressChaosDataResourcesList", paramType = "body", dataTypeClass = StressChaosResourcesDataList.class)
+ })
+ @PostMapping
+ public StressChaosResourcesDataList createStressChaosResourcesData(@RequestBody StressChaosResourcesDataList stressChaosResourcesDataList) {
+  return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
+ }
 
 
     /**
