@@ -39,7 +39,7 @@ public class ClustersController {
      */
     @ApiOperation(value="Clusters 정보 저장(Create Clusters Info)", nickname="createClusters")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusters", value = "클러스터 명", required = true, dataType = "Clusters", paramType = "body")
+            @ApiImplicitParam(name = "clusters", value = "클러스터 명", required = true, dataType = "Clusters", paramType = "body", dataTypeClass = Clusters.class)
     })
     @PostMapping
     public Clusters createClusters(@RequestBody Clusters clusters) {
@@ -55,7 +55,7 @@ public class ClustersController {
      */
     @ApiOperation(value="Clusters 정보 조회(Get Clusters Info)", nickname="getClusters")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusterId", value = "클러스터 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "clusterId", value = "클러스터 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping(value = "/{clusterId:.+}")
     public Clusters getClusters(@PathVariable String clusterId) {
@@ -96,7 +96,7 @@ public class ClustersController {
      */
     @ApiOperation(value="Clusters 정보 수정(Update Clusters Info)", nickname="updateClusters")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusters", value = "클러스터 정보", required = true, dataType = "Clusters", paramType = "body")
+            @ApiImplicitParam(name = "clusters", value = "클러스터 정보", required = true, dataType = "Clusters", paramType = "body", dataTypeClass = Clusters.class)
     })
     @PatchMapping
     public Clusters updateClusters(@RequestBody Clusters clusters) {
@@ -110,7 +110,7 @@ public class ClustersController {
      */
     @ApiOperation(value="Clusters 정보 삭제(Delete Clusters Info)", nickname="deleteClusters")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusters", value = "클러스터 정보", required = true, dataType = "Clusters", paramType = "body")
+            @ApiImplicitParam(name = "clusters", value = "클러스터 정보", required = true, dataType = "Clusters", paramType = "body", dataTypeClass = Clusters.class)
     })
     @DeleteMapping(value = "/{clusterId:.+}")
     public Clusters deleteClusters(@PathVariable String clusterId) {

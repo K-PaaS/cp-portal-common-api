@@ -38,7 +38,7 @@ public class ClusterLogsController {
      */
     @ApiOperation(value="Clusters Log 정보 조회(Get Clusters Info)", nickname="getClusters")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusterId", value = "클러스터 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "clusterId", value = "클러스터 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping(value = "/{clusterId:.+}")
     public ClusterLogsList getClusterLogs(@PathVariable String clusterId) {

@@ -38,7 +38,7 @@ public class ServiceInstanceController {
      */
     @ApiOperation(value="ServiceInstance 정보 조회(Get ServiceInstance Info)", nickname="getServiceInstance")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "serviceInstanceId", value = "serviceInstance 아이디", required = true, dataType = "String", paramType = "path")
+            @ApiImplicitParam(name = "serviceInstanceId", value = "serviceInstance 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
     })
     @GetMapping(value = "{serviceInstanceId:.+}")
     public ServiceInstanceList getServiceInstance(@PathVariable String serviceInstanceId) {
