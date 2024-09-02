@@ -5,7 +5,6 @@ import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
@@ -39,6 +38,7 @@ public class ChaosService {
         this.resourceUsageOfChaosRepository = resourceUsageOfChaosRepository;
     }
 
+
     /**
      *  StressChaos 정보 저장(Create StressChaos Info)
      *
@@ -57,6 +57,8 @@ public class ChaosService {
             chaosResource.setStressChaos(getStressChaosChaosId(stressChaos.getChaosName(), stressChaos.getNamespaces()));
             createChaosResource(chaosResource);
         }
+
+
 
         return (StressChaosResourcesDataList) commonService.setResultModel(stressChaosResourcesDataList, Constants.RESULT_STATUS_SUCCESS);
     }
@@ -78,15 +80,7 @@ public class ChaosService {
     }
 
     /**
-     * StressChaos chaosId 조회(Get StressChaos chaosId)
-     */
-    public StressChaos getStressChaosChaosId(String chaosName, String namespaces) {
-        return stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
-    }
-
-    /**
      *  Chaos Resource 정보 저장(Create chaos resource Info)
-     *
      */
     public ChaosResource createChaosResource(ChaosResource chaosResource) {
         ChaosResource chaosResourceinfo = new ChaosResource();
@@ -98,6 +92,13 @@ public class ChaosService {
         }
 
         return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     * StressChaos chaosId 조회(Get StressChaos chaosId)
+     */
+    public StressChaos getStressChaosChaosId(String chaosName, String namespaces) {
+        return stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
     }
 
     /**
