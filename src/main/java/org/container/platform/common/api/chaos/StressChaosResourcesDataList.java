@@ -9,6 +9,7 @@ import java.util.List;
 public class StressChaosResourcesDataList {
     private String resultCode;
     private String resultMessage;
+    private List resultList;
     private StressChaos stressChaos;
     private List<ChaosResource> chaosResource;
 

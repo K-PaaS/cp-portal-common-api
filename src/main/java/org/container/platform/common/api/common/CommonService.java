@@ -70,7 +70,7 @@ public class CommonService {
         } catch (InvocationTargetException e2) {
             LOGGER.error("InvocationTargetException :: {}", e2);
         }
-
+        System.out.println("setResultModel : " + reqObject);
         return reqObject;
     }
 
