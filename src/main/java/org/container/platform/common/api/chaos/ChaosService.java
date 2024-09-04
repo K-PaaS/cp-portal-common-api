@@ -5,6 +5,8 @@ import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,13 +55,14 @@ public class ChaosService {
 
         createStressChaos(stressChaos);
 
+        List resultResourceIds = new ArrayList<>();
+
         for(ChaosResource chaosResource : stressChaosResourcesDataList.getChaosResource()){
             chaosResource.setStressChaos(getStressChaosChaosId(stressChaos.getChaosName(), stressChaos.getNamespaces()));
-            createChaosResource(chaosResource);
+            ChaosResource resultChaosResource = createChaosResource(chaosResource);
+            resultResourceIds.add(resultChaosResource.getResourceId());
         }
-
-
-
+        stressChaosResourcesDataList.setResultList(resultResourceIds);
         return (StressChaosResourcesDataList) commonService.setResultModel(stressChaosResourcesDataList, Constants.RESULT_STATUS_SUCCESS);
     }
 
@@ -86,6 +89,7 @@ public class ChaosService {
         ChaosResource chaosResourceinfo = new ChaosResource();
         try {
             chaosResourceinfo = chaosResourceRepository.save(chaosResource);
+
         } catch (Exception e) {
             chaosResourceinfo.setResultMessage(e.getMessage());
             return (ChaosResource) commonService.setResultModel(chaosResourceinfo, Constants.RESULT_STATUS_FAIL);
