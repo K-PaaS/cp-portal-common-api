@@ -1,9 +1,12 @@
 package org.container.platform.common.api.chaos;
 
+import org.container.platform.common.api.cloudAccounts.CloudAccounts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * ChaosResource Repository 인터페이스
@@ -15,6 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface ChaosResourceRepository extends JpaRepository<ChaosResource, Long>, JpaSpecificationExecutor<ChaosResource> {
+public interface ChaosResourceRepository extends JpaRepository<ChaosResource, Long> {
+//    List<ChaosResource> findAllByResourceId(String resourceId);
+//
+//    void findById(String resourceId);
+
 
 }

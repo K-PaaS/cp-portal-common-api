@@ -52,4 +52,11 @@ public class ChaosResource {
 
     @Transient
     private String namespaces;
+
+    public ChaosResource(String resultStatusFail, String dataNotFoundMessage) {
+    }
+
+    public ChaosResource() {
+
+    }
 }
