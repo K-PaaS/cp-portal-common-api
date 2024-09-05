@@ -1,5 +1,6 @@
 package org.container.platform.common.api.chaos;
 
+import org.container.platform.common.api.cloudAccounts.CloudAccounts;
 import org.container.platform.common.api.common.CommonService;
 import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Resource Usage Of Chaos Service 클래스
@@ -106,6 +108,24 @@ public class ChaosService {
     }
 
     /**
+     * ChaosResource 정보 목록 조회(Get ChaosResource info list)
+     *
+     * @return the ChaosResource info list
+     */
+    public ChaosResourcesList getChaosResourcesList(List<Long> resourceIds) {
+        List<ChaosResource> chaosResources = new ArrayList<>();
+        for(long resourceId : resourceIds){
+            ChaosResource chaosResource = chaosResourceRepository.findById(resourceId).get();
+            chaosResources.add(chaosResource);
+        }
+        ChaosResourcesList chaosResourcesList = new ChaosResourcesList();
+        chaosResourcesList.setItems(chaosResources);
+
+        System.out.println("ChaosResourcesList : " + chaosResourcesList);
+        return (ChaosResourcesList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
      * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
      *
      * @return the limitRangesDefault list
@@ -117,4 +137,6 @@ public class ChaosService {
 
         return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
     }
+
+
 }

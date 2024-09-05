@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 /**
  * Chaos Controller 클래스
@@ -46,6 +47,16 @@ public class ChaosController {
   return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
  }
 
+    /**
+     * ChaosResource 정보 목록 조회(Get ChaosResource info list)
+     *
+     * @return the ChaosResource info list
+     */
+    @ApiOperation(value="ChaosResource 정보 목록 조회(Get ChaosResource info list)", nickname="getChaosResourcesList")
+    @GetMapping("/chaosResourcesList")
+    public ChaosResourcesList getChaosResourcesList(@RequestParam(value = "resourceId") List<Long> resourceIds) {
+        return chaosService.getChaosResourcesList(resourceIds);
+    }
 
     /**
      * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
