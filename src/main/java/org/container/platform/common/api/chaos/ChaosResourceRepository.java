@@ -18,8 +18,8 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface ChaosResourceRepository extends JpaRepository<ChaosResource, Long> {
-//    List<ChaosResource> findAllByResourceId(String resourceId);
+    public interface ChaosResourceRepository extends JpaRepository<ChaosResource, Long>, JpaSpecificationExecutor<ChaosResource>  {
+    List<ChaosResource> findByResourceIdIn(List<Long> resourceIds);
 //
 //    void findById(String resourceId);
 

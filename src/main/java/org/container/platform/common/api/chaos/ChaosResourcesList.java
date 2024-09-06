@@ -20,4 +20,12 @@ public class ChaosResourcesList {
 
     @Column(name = "items")
     private List<ChaosResource> items;
+
+    public ChaosResourcesList(){
+
+    }
+    public ChaosResourcesList( List<ChaosResource> chaosResources) {
+        this.items = chaosResources;
+    }
+
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Chaos Model 클래스
@@ -45,4 +47,5 @@ public class StressChaos {
 
     @Column(name = "duration")
     private String duration;
+
 }
