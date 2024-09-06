@@ -31,8 +31,11 @@ public class ChaosResource {
     @Column(name = "resource_id")
     private long resourceId;
 
+    @Transient
+    private long chaosId;
+
     @ManyToOne
-    @JoinColumn(name = "chaos_id", referencedColumnName = "chaos_id", nullable = false)
+    @JoinColumn(name = "chaos_id")
     private StressChaos stressChaos;
 
     @Column(name = "resource_name")
@@ -53,10 +56,4 @@ public class ChaosResource {
     @Transient
     private String namespaces;
 
-    public ChaosResource(String resultStatusFail, String dataNotFoundMessage) {
-    }
-
-    public ChaosResource() {
-
-    }
 }

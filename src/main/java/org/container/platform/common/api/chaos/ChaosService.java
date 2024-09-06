@@ -1,6 +1,5 @@
 package org.container.platform.common.api.chaos;
 
-import org.container.platform.common.api.cloudAccounts.CloudAccounts;
 import org.container.platform.common.api.common.CommonService;
 import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Resource Usage Of Chaos Service 클래스
@@ -56,8 +54,7 @@ public class ChaosService {
         stressChaos.setDuration(stressChaosResourcesDataList.getStressChaos().getDuration());
 
         createStressChaos(stressChaos);
-
-        List resultResourceIds = new ArrayList<>();
+        List<Long> resultResourceIds = new ArrayList<>();
 
         for(ChaosResource chaosResource : stressChaosResourcesDataList.getChaosResource()){
             chaosResource.setStressChaos(getStressChaosChaosId(stressChaos.getChaosName(), stressChaos.getNamespaces()));
@@ -65,6 +62,7 @@ public class ChaosService {
             resultResourceIds.add(resultChaosResource.getResourceId());
         }
         stressChaosResourcesDataList.setResultList(resultResourceIds);
+
         return (StressChaosResourcesDataList) commonService.setResultModel(stressChaosResourcesDataList, Constants.RESULT_STATUS_SUCCESS);
     }
 
@@ -113,15 +111,10 @@ public class ChaosService {
      * @return the ChaosResource info list
      */
     public ChaosResourcesList getChaosResourcesList(List<Long> resourceIds) {
-        List<ChaosResource> chaosResources = new ArrayList<>();
-        for(long resourceId : resourceIds){
-            ChaosResource chaosResource = chaosResourceRepository.findById(resourceId).get();
-            chaosResources.add(chaosResource);
-        }
-        ChaosResourcesList chaosResourcesList = new ChaosResourcesList();
-        chaosResourcesList.setItems(chaosResources);
+        ChaosResourcesList chaosResourcesList = new ChaosResourcesList(chaosResourceRepository.findByResourceIdIn(resourceIds));
+        System.out.println(chaosResourcesList);
 
-        System.out.println("ChaosResourcesList : " + chaosResourcesList);
+
         return (ChaosResourcesList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
     }
 
