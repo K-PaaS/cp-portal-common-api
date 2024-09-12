@@ -23,6 +23,8 @@ public class ChaosService {
     private final CommonService commonService;
     private final StressChaosRepository stressChaosRepository;
     private final ChaosResourceRepository chaosResourceRepository;
+
+    private final ChaosResourceUsageRepository chaosResourceUsageRepository;
     private final ResourceUsageOfChaosRepository resourceUsageOfChaosRepository;
 
     /**
@@ -33,10 +35,11 @@ public class ChaosService {
      * @param resourceUsageOfChaosRepository the resourceUsageOfChaos Repository
      */
     @Autowired
-    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ChaosResourceRepository chaosResourceRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
+    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ChaosResourceRepository chaosResourceRepository, ChaosResourceUsageRepository chaosResourceUsageRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
         this.commonService = commonService;
         this.stressChaosRepository = stressChaosRepository;
         this.chaosResourceRepository = chaosResourceRepository;
+        this.chaosResourceUsageRepository = chaosResourceUsageRepository;
         this.resourceUsageOfChaosRepository = resourceUsageOfChaosRepository;
     }
 
@@ -131,5 +134,19 @@ public class ChaosService {
         return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
     }
 
-
+    /**
+     *  ChaosResourceUsage 정보 저장(Create ChaosResourceUsage Info)
+     */
+    public ChaosResourceUsageList createChaosResourceUsageData(ChaosResourceUsageList chaosResourceUsageList) {
+        for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList.getItems()){
+            ChaosResourceUsage chaosResourceUsageinfo = new ChaosResourceUsage();
+            try {
+                chaosResourceUsageinfo = chaosResourceUsageRepository.save(chaosResourceUsage);
+            } catch (Exception e) {
+                chaosResourceUsageList.setResultMessage(e.getMessage());
+                return (ChaosResourceUsageList) commonService.setResultModel(chaosResourceUsageList, Constants.RESULT_STATUS_FAIL);
+            }
+        }
+        return (ChaosResourceUsageList) commonService.setResultModel(chaosResourceUsageList, Constants.RESULT_STATUS_SUCCESS);
+    }
 }

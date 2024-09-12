@@ -42,7 +42,7 @@ public class ChaosController {
  @ApiImplicitParams({
          @ApiImplicitParam(name = "stressChaosResourcesData", value = "createStressChaosResourcesData 생성", required = true, dataType = "StressChaosDataResourcesList", paramType = "body", dataTypeClass = StressChaosResourcesDataList.class)
  })
- @PostMapping
+ @PostMapping("/stressChaosResourceList")
  public StressChaosResourcesDataList createStressChaosResourcesData(@RequestBody StressChaosResourcesDataList stressChaosResourcesDataList) {
   return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
  }
@@ -68,5 +68,20 @@ public class ChaosController {
     public ResourceUsageOfChaosList getResourceUsageOfChaosList() {
         return chaosService.getResourceUsageOfChaosList();
     }
+
+    /**
+     * ChaosResourceUsage Data 생성(Create ChaosResourceUsage Data)
+     *
+     * @ChaosResourceUsageList the ChaosResourceUsageList
+     */
+    @ApiOperation(value="ChaosResourceUsage Data 생성(Create ChaosResourceUsage Data)", nickname="createChaosResourceUsageData")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chaosResourceUsageData", value = "createChaosResourceUsageData 생성", required = true, dataType = "ChaosResourceUsageList", paramType = "body", dataTypeClass = ChaosResourceUsageList.class)
+    })
+    @PostMapping("/chaosResourceUsageList")
+    public ChaosResourceUsageList createChaosResourceUsageData(@RequestBody ChaosResourceUsageList chaosResourceUsageList) {
+        return chaosService.createChaosResourceUsageData(chaosResourceUsageList);
+    }
+
 
 }
