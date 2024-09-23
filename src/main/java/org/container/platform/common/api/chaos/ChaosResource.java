@@ -31,9 +31,6 @@ public class ChaosResource {
     @Column(name = "resource_id")
     private long resourceId;
 
-    @Transient
-    private long chaosId;
-
     @ManyToOne
     @JoinColumn(name = "chaos_id")
     private StressChaos stressChaos;

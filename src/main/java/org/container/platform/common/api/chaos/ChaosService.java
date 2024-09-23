@@ -115,9 +115,6 @@ public class ChaosService {
      */
     public ChaosResourcesList getChaosResourcesList(List<Long> resourceIds) {
         ChaosResourcesList chaosResourcesList = new ChaosResourcesList(chaosResourceRepository.findByResourceIdIn(resourceIds));
-        System.out.println(chaosResourcesList);
-
-
         return (ChaosResourcesList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
     }
 

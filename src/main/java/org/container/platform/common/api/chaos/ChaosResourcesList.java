@@ -17,8 +17,6 @@ import java.util.List;
 public class ChaosResourcesList {
     private String resultCode;
     private String resultMessage;
-
-    @Column(name = "items")
     private List<ChaosResource> items;
 
     public ChaosResourcesList(){
