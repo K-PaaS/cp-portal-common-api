@@ -32,20 +32,19 @@ public class ChaosController {
         this.chaosService = chaosService;
     }
 
-
- /**
-  * StressChaos Resources Data 생성(Create StressChaos Resources Data)
-  *
-  * @StressChaosDataList the StressChaosDataList
-  */
- @ApiOperation(value="StressChaos Resources Data 생성(Create StressChaos Resources Data)", nickname="createStressChaosResourcesData")
- @ApiImplicitParams({
-         @ApiImplicitParam(name = "stressChaosResourcesData", value = "createStressChaosResourcesData 생성", required = true, dataType = "StressChaosDataResourcesList", paramType = "body", dataTypeClass = StressChaosResourcesDataList.class)
- })
- @PostMapping("/stressChaosResourceList")
- public StressChaosResourcesDataList createStressChaosResourcesData(@RequestBody StressChaosResourcesDataList stressChaosResourcesDataList) {
-  return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
- }
+     /**
+      * StressChaos Resources Data 생성(Create StressChaos Resources Data)
+      *
+      * @return the StressChaosDataList
+      */
+     @ApiOperation(value="StressChaos Resources Data 생성(Create StressChaos Resources Data)", nickname="createStressChaosResourcesData")
+     @ApiImplicitParams({
+             @ApiImplicitParam(name = "stressChaosResourcesData", value = "createStressChaosResourcesData 생성", required = true, dataType = "StressChaosDataResourcesList", paramType = "body", dataTypeClass = StressChaosResourcesDataList.class)
+     })
+     @PostMapping("/stressChaosResourceList")
+     public StressChaosResourcesDataList createStressChaosResourcesData(@RequestBody StressChaosResourcesDataList stressChaosResourcesDataList) {
+      return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
+     }
 
     /**
      * ChaosResource 정보 목록 조회(Get ChaosResource info list)
@@ -53,35 +52,36 @@ public class ChaosController {
      * @return the ChaosResource info list
      */
     @ApiOperation(value="ChaosResource 정보 목록 조회(Get ChaosResource info list)", nickname="getChaosResourcesList")
-    @GetMapping("/chaosResourcesList")
+    @GetMapping("/chaosResourcesList/{chaosName}")
     public ChaosResourcesList getChaosResourcesList(@RequestParam(value = "resourceId") List<Long> resourceIds) {
         return chaosService.getChaosResourcesList(resourceIds);
     }
 
     /**
-     * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
-     *
-     * @return the resourceUsageOfChaos list
-     */
-    @ApiOperation(value="ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)", nickname="getResourceUsageOfChaosList")
-    @GetMapping("/resourceGraph")
-    public ResourceUsageOfChaosList getResourceUsageOfChaosList() {
-        return chaosService.getResourceUsageOfChaosList();
-    }
-
-    /**
      * ChaosResourceUsage Data 생성(Create ChaosResourceUsage Data)
      *
-     * @ChaosResourceUsageList the ChaosResourceUsageList
+     * @return the ChaosResourceUsageList
      */
     @ApiOperation(value="ChaosResourceUsage Data 생성(Create ChaosResourceUsage Data)", nickname="createChaosResourceUsageData")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "chaosResourceUsageData", value = "createChaosResourceUsageData 생성", required = true, dataType = "ChaosResourceUsageList", paramType = "body", dataTypeClass = ChaosResourceUsageList.class)
     })
-    @PostMapping("/chaosResourceUsageList")
+    @PostMapping("/chaosResourceUsageList/{chaosName}")
     public ChaosResourceUsageList createChaosResourceUsageData(@RequestBody ChaosResourceUsageList chaosResourceUsageList) {
         return chaosService.createChaosResourceUsageData(chaosResourceUsageList);
     }
+
+    /**
+     * Resource usage by selected Pods during chaos 조회(Get Resource Usage by selected Pods during chaos)
+     *
+     * @return the ResourceUsage
+     */
+    @ApiOperation(value="Resource usage by selected Pods during chaos 조회(Get Resource Usage by selected Pods during chaos)", nickname="getResourceUsageByPod")
+    @GetMapping("/resourceUsageByPod/{chaosName}")
+    public ResourceUsage getResourceUsageByPod(@PathVariable String chaosName) {
+        return chaosService.getResourceUsageByPod(chaosName);
+    }
+
 
 
 }

@@ -2,6 +2,8 @@ package org.container.platform.common.api.chaos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface StressChaosRepository extends JpaRepository<StressChaos, Long>, JpaSpecificationExecutor<StressChaos> {
     StressChaos findByChaosNameAndNamespaces(String chaosName, String namespaces);
 
-    String findIdByChaosNameAndNamespaces(String chaosName, String namespaces);
+    @Query(value = "SELECT chaos_id FROM cp_stress_chaos WHERE chaos_name = :chaosName ;", nativeQuery = true)
+    String findByName(@Param("chaosName") String chaosName);
 
 }
