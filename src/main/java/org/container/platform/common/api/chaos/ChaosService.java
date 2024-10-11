@@ -25,22 +25,20 @@ public class ChaosService {
     private final ChaosResourceRepository chaosResourceRepository;
 
     private final ChaosResourceUsageRepository chaosResourceUsageRepository;
-    private final ResourceUsageOfChaosRepository resourceUsageOfChaosRepository;
 
     /**
-     * Instantiates a new ResourceUsageOfChaos service
+     * Instantiates a new Chaos service
      *
-     * @param commonService                  the common service
      * @param chaosResourceRepository        the chaosResourceRepository Repository
-     * @param resourceUsageOfChaosRepository the resourceUsageOfChaos Repository
+     * @param chaosResourceUsageRepository   the chaosResourceUsage Repository
+     * @param stressChaosRepository          the stressChaos Repository
      */
     @Autowired
-    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ChaosResourceRepository chaosResourceRepository, ChaosResourceUsageRepository chaosResourceUsageRepository, ResourceUsageOfChaosRepository resourceUsageOfChaosRepository) {
+    public ChaosService(CommonService commonService, StressChaosRepository stressChaosRepository, ChaosResourceRepository chaosResourceRepository, ChaosResourceUsageRepository chaosResourceUsageRepository) {
         this.commonService = commonService;
         this.stressChaosRepository = stressChaosRepository;
         this.chaosResourceRepository = chaosResourceRepository;
         this.chaosResourceUsageRepository = chaosResourceUsageRepository;
-        this.resourceUsageOfChaosRepository = resourceUsageOfChaosRepository;
     }
 
 
@@ -119,31 +117,49 @@ public class ChaosService {
     }
 
     /**
-     * ResourceUsageOfChaos 목록 조회(Get ResourceUsageOfChaos list)
-     *
-     * @return the limitRangesDefault list
-     */
-    public ResourceUsageOfChaosList getResourceUsageOfChaosList() {
-        List<ResourceUsageOfChaos> resourceUsageOfChaosList = resourceUsageOfChaosRepository.findAll();
-        ResourceUsageOfChaosList finalresourceUsageOfChaosList = new ResourceUsageOfChaosList();
-        finalresourceUsageOfChaosList.setItems(resourceUsageOfChaosList);
-
-        return (ResourceUsageOfChaosList) commonService.setResultModel(finalresourceUsageOfChaosList, Constants.RESULT_STATUS_SUCCESS);
-    }
-
-    /**
      *  ChaosResourceUsage 정보 저장(Create ChaosResourceUsage Info)
      */
     public ChaosResourceUsageList createChaosResourceUsageData(ChaosResourceUsageList chaosResourceUsageList) {
         for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList.getItems()){
-            ChaosResourceUsage chaosResourceUsageinfo = new ChaosResourceUsage();
             try {
-                chaosResourceUsageinfo = chaosResourceUsageRepository.save(chaosResourceUsage);
+                chaosResourceUsageRepository.save(chaosResourceUsage);
             } catch (Exception e) {
                 chaosResourceUsageList.setResultMessage(e.getMessage());
                 return (ChaosResourceUsageList) commonService.setResultModel(chaosResourceUsageList, Constants.RESULT_STATUS_FAIL);
             }
         }
         return (ChaosResourceUsageList) commonService.setResultModel(chaosResourceUsageList, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     *  Resource usage by selected Pods during chaos 조회(Get Resource Usage by selected Pods during chaos)
+     */
+    public ResourceUsage getResourceUsageByPod(String chaosName) {
+        String chaosId = stressChaosRepository.findByName(chaosName);
+        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
+        List<Long> resourceIds = null;
+        for(ChaosResource chaosResource : chaosResourceList ){
+            resourceIds.add(chaosResource.getResourceId());
+        }
+
+        List<ChaosResourceUsage> chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(resourceIds);
+
+        ResourceUsage  resourceUsage = new ResourceUsage();
+        ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
+
+        for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+            resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+            resourceUsageItem.getCpu().add(chaosResourceUsage.getCpu());
+            resourceUsageItem.getMemory().add(chaosResourceUsage.getMemory());
+            resourceUsageItem.getAppStatus().add(chaosResourceUsage.getAppStatus());
+        }
+
+
+
+
+        resourceUsage.addItem(resourceUsageItem);
+
+        resourceUsage.setDetailMessage("hi");
+        return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
 }
