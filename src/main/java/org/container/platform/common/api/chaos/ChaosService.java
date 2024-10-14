@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Resource Usage Of Chaos Service 클래스
@@ -137,29 +139,33 @@ public class ChaosService {
     public ResourceUsage getResourceUsageByPod(String chaosName) {
         String chaosId = stressChaosRepository.findByName(chaosName);
         List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
-        List<Long> resourceIds = null;
-        for(ChaosResource chaosResource : chaosResourceList ){
-            resourceIds.add(chaosResource.getResourceId());
-        }
-
-        List<ChaosResourceUsage> chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(resourceIds);
-
         ResourceUsage  resourceUsage = new ResourceUsage();
         ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
+        int count = 0;
 
-        for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
-            resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
-            resourceUsageItem.getCpu().add(chaosResourceUsage.getCpu());
-            resourceUsageItem.getMemory().add(chaosResourceUsage.getMemory());
-            resourceUsageItem.getAppStatus().add(chaosResourceUsage.getAppStatus());
+        for(ChaosResource chaosResource : chaosResourceList ){
+            resourceUsageItem.getPodName().add(chaosResource.getResourceName());
+            List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
+
+            List<String> cpu = new ArrayList<>();
+            List<String> memory = new ArrayList<>();
+            List<Integer> appStatus = new ArrayList<>();
+
+            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                cpu.add(chaosResourceUsage.getCpu());
+                memory.add(chaosResourceUsage.getMemory());
+                appStatus.add(chaosResourceUsage.getAppStatus());
+                if(count == 0){
+                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                }
+            }
+            count++;
+            resourceUsageItem.getCpu().add(cpu);
+            resourceUsageItem.getMemory().add(memory);
+            resourceUsageItem.getAppStatus().add(appStatus);
         }
 
-
-
-
         resourceUsage.addItem(resourceUsageItem);
-
-        resourceUsage.setDetailMessage("hi");
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
 }
