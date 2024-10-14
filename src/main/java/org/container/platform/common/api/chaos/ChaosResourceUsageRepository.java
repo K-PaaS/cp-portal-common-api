@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
     public interface ChaosResourceUsageRepository extends JpaRepository<ChaosResourceUsage, Long>, JpaSpecificationExecutor<ChaosResourceUsage> {
 
-    @Query(value = "SELECT * FROM cp_chaos_resource_usage WHERE resource_id = :resourceId ;", nativeQuery = true)
-    List<ChaosResourceUsage> findAllByResourceId(@Param("resourceId") List<Long> resourceId);
+    @Query(value = "SELECT * FROM cp_chaos_resource_usage WHERE resource_id = :resourceIds ;", nativeQuery = true)
+    List<ChaosResourceUsage> findAllByResourceId(@Param("resourceIds") Long resourceIds);
 
 }

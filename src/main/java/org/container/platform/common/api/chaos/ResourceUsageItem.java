@@ -16,9 +16,9 @@ import java.util.List;
 public class ResourceUsageItem {
     private List<String> time;
     private List<String> podName;
-    private List<String> cpu;
-    private List<String> memory;
-    private List<Integer> appStatus;
+    private List<List<String>> cpu;
+    private List<List<String>> memory;
+    private List<List<Integer>> appStatus;
 
     public ResourceUsageItem() {
         this.time = new ArrayList<>();

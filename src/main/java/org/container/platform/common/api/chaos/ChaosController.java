@@ -52,7 +52,7 @@ public class ChaosController {
      * @return the ChaosResource info list
      */
     @ApiOperation(value="ChaosResource 정보 목록 조회(Get ChaosResource info list)", nickname="getChaosResourcesList")
-    @GetMapping("/chaosResourcesList/{chaosName}")
+    @GetMapping("/chaosResourcesList")
     public ChaosResourcesList getChaosResourcesList(@RequestParam(value = "resourceId") List<Long> resourceIds) {
         return chaosService.getChaosResourcesList(resourceIds);
     }
@@ -66,7 +66,7 @@ public class ChaosController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "chaosResourceUsageData", value = "createChaosResourceUsageData 생성", required = true, dataType = "ChaosResourceUsageList", paramType = "body", dataTypeClass = ChaosResourceUsageList.class)
     })
-    @PostMapping("/chaosResourceUsageList/{chaosName}")
+    @PostMapping("/chaosResourceUsageList")
     public ChaosResourceUsageList createChaosResourceUsageData(@RequestBody ChaosResourceUsageList chaosResourceUsageList) {
         return chaosService.createChaosResourceUsageData(chaosResourceUsageList);
     }
