@@ -15,14 +15,14 @@ import java.util.List;
 @Data
 public class ResourceUsageItem {
     private List<String> time;
-    private List<String> podName;
+    private List<String> resourceName;
     private List<List<String>> cpu;
     private List<List<String>> memory;
     private List<List<Integer>> appStatus;
 
     public ResourceUsageItem() {
         this.time = new ArrayList<>();
-        this.podName = new ArrayList<>();
+        this.resourceName = new ArrayList<>();
         this.cpu = new ArrayList<>();
         this.memory = new ArrayList<>();
         this.appStatus = new ArrayList<>();

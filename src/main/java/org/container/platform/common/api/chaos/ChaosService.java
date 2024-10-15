@@ -144,7 +144,79 @@ public class ChaosService {
         int count = 0;
 
         for(ChaosResource chaosResource : chaosResourceList ){
-            resourceUsageItem.getPodName().add(chaosResource.getResourceName());
+            resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
+            List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
+
+            List<String> cpu = new ArrayList<>();
+            List<String> memory = new ArrayList<>();
+            List<Integer> appStatus = new ArrayList<>();
+
+            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                cpu.add(chaosResourceUsage.getCpu());
+                memory.add(chaosResourceUsage.getMemory());
+                appStatus.add(chaosResourceUsage.getAppStatus());
+                if(count == 0){
+                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                }
+            }
+            count++;
+            resourceUsageItem.getCpu().add(cpu);
+            resourceUsageItem.getMemory().add(memory);
+            resourceUsageItem.getAppStatus().add(appStatus);
+        }
+
+        resourceUsage.addItem(resourceUsageItem);
+        return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     *  Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)
+     */
+    public ResourceUsage getResourceUsageByWorkload(String chaosName) {
+        String chaosId = stressChaosRepository.findByName(chaosName);
+        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
+        ResourceUsage  resourceUsage = new ResourceUsage();
+        ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
+        int count = 0;
+
+        for(ChaosResource chaosResource : chaosResourceList ){
+            resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
+            List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
+
+            List<String> cpu = new ArrayList<>();
+            List<String> memory = new ArrayList<>();
+            List<Integer> appStatus = new ArrayList<>();
+
+            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                cpu.add(chaosResourceUsage.getCpu());
+                memory.add(chaosResourceUsage.getMemory());
+                appStatus.add(chaosResourceUsage.getAppStatus());
+                if(count == 0){
+                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                }
+            }
+            count++;
+            resourceUsageItem.getCpu().add(cpu);
+            resourceUsageItem.getMemory().add(memory);
+            resourceUsageItem.getAppStatus().add(appStatus);
+        }
+
+        resourceUsage.addItem(resourceUsageItem);
+        return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     *  Resource usage by node during chaos 조회(Get Resource usage by node during chaos)
+     */
+    public ResourceUsage getResourceUsageByNode(String chaosName) {
+        String chaosId = stressChaosRepository.findByName(chaosName);
+        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
+        ResourceUsage  resourceUsage = new ResourceUsage();
+        ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
+        int count = 0;
+
+        for(ChaosResource chaosResource : chaosResourceList ){
+            resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
             List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
 
             List<String> cpu = new ArrayList<>();

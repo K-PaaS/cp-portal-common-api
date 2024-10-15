@@ -82,6 +82,26 @@ public class ChaosController {
         return chaosService.getResourceUsageByPod(chaosName);
     }
 
+    /**
+     * Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)
+     *
+     * @return the ResourceUsage
+     */
+    @ApiOperation(value="Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)", nickname="getResourceUsageByWorkload")
+    @GetMapping("/resourceUsageByWorkload/{chaosName}")
+    public ResourceUsage getResourceUsageByWorkload(@PathVariable String chaosName) {
+     return chaosService.getResourceUsageByWorkload(chaosName);
+    }
 
+    /**
+     * Resource usage by node during chaos 조회(Get Resource usage by node during chaos)
+     *
+     * @return the ResourceUsage
+     */
+    @ApiOperation(value="Resource usage by node during chaos 조회(Get Resource usage by node during chaos)", nickname="getResourceUsageByNode")
+    @GetMapping("/resourceUsageByNode/{chaosName}")
+    public ResourceUsage getResourceUsageByNode(@PathVariable String chaosName) {
+     return chaosService.getResourceUsageByNode(chaosName);
+    }
 
 }
