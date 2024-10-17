@@ -26,13 +26,22 @@ public class ChaosResourceUsage {
     private ChaosResourceUsageId chaosResourceUsageId;
 
     @Column(name = "cpu")
-    private String cpu;
+    private Long cpu;
 
     @Column(name = "memory")
-    private String memory;
+    private Long memory;
 
     @Column(name = "app_status")
     private Integer appStatus;
 
+    public ChaosResourceUsage() {
+
+    }
+    public ChaosResourceUsage(Object measurementTime, Object cpu, Object memory) {
+        this.chaosResourceUsageId = new ChaosResourceUsageId();
+        this.chaosResourceUsageId.setMeasurementTime((String) measurementTime);
+        this.cpu = (Long) cpu;
+        this.memory = (Long) memory;
+    }
 }
 

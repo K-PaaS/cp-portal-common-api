@@ -1,6 +1,5 @@
 package org.container.platform.common.api.chaos;
 
-import org.container.platform.common.api.cloudAccounts.CloudAccounts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -24,9 +23,12 @@ import java.util.List;
     List<ChaosResource> findByResourceIdIn(List<Long> resourceIds);
 
     @Query(value = "SELECT * FROM cp_chaos_resource WHERE chaos_id = :chaosId AND choice = 1 ;", nativeQuery = true)
-    List<ChaosResource> findAllByChoice(@Param("chaosId") String chaosId);
+    List<ChaosResource> findAllByChoice(@Param("chaosId") Long chaosId);
 
-    @Query(value = "SELECT resource_id FROM cp_chaos_resource WHERE chaos_id = :chaosId AND choice = 1 ;", nativeQuery = true)
-    long findResourceIdByChoice(@Param("chaosId") String chaosId);
+    @Query(value = "SELECT generate_name FROM cp_chaos_resource WHERE chaos_id = :chaosId AND type = 'pod' GROUP BY generate_name ;", nativeQuery = true)
+    List<String> findGenerateNameByChaosId(@Param("chaosId") Long chaosId);
+
+    @Query(value = "SELECT * FROM cp_chaos_resource WHERE chaos_id = :chaosId AND type = :type ;", nativeQuery = true)
+    List<ChaosResource> findAllByChaosId(@Param("chaosId") Long chaosId, @Param("type") String type);
 
 }

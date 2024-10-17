@@ -21,6 +21,6 @@ public interface StressChaosRepository extends JpaRepository<StressChaos, Long>,
     StressChaos findByChaosNameAndNamespaces(String chaosName, String namespaces);
 
     @Query(value = "SELECT chaos_id FROM cp_stress_chaos WHERE chaos_name = :chaosName ;", nativeQuery = true)
-    String findByName(@Param("chaosName") String chaosName);
+    Long findByName(@Param("chaosName") String chaosName);
 
 }

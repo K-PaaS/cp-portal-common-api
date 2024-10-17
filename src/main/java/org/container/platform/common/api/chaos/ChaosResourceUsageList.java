@@ -2,6 +2,8 @@ package org.container.platform.common.api.chaos;
 
 import lombok.Builder;
 import lombok.Data;
+import org.container.platform.common.api.common.Constants;
+
 import java.util.List;
 
 /**
@@ -12,10 +14,15 @@ import java.util.List;
  * @since 2024-09-12
  */
 @Data
-@Builder
 public class ChaosResourceUsageList {
     private String resultCode;
     private String resultMessage;
     private List<ChaosResourceUsage> items;
 
+    public ChaosResourceUsageList() {
+    }
+
+    public ChaosResourceUsageList(List<ChaosResourceUsage>  items) {
+        this.items = items;
+    }
 }

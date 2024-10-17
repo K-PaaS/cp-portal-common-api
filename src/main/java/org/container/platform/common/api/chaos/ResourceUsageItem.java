@@ -16,8 +16,8 @@ import java.util.List;
 public class ResourceUsageItem {
     private List<String> time;
     private List<String> resourceName;
-    private List<List<String>> cpu;
-    private List<List<String>> memory;
+    private List<List<Long>> cpu;
+    private List<List<Long>> memory;
     private List<List<Integer>> appStatus;
 
     public ResourceUsageItem() {
