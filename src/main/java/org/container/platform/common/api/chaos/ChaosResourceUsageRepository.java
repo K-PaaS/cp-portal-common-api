@@ -24,4 +24,14 @@ import java.util.List;
     @Query(value = "SELECT * FROM cp_chaos_resource_usage WHERE resource_id = :resourceIds ;", nativeQuery = true)
     List<ChaosResourceUsage> findAllByResourceId(@Param("resourceIds") Long resourceIds);
 
+    @Query(value =
+            "SELECT A.measurement_time, SUM(A.cpu) AS cpu, SUM(A.memory) AS memory " +
+                    "FROM cp_chaos_resource_usage A " +
+                    "JOIN cp_chaos_resource B ON A.resource_id = B.resource_id " +
+                    "WHERE B.chaos_id = :chaosId " +
+                    "AND B.type = 'pod' " +
+                    "AND B.generate_name = :generateName " +
+                    "GROUP BY A.measurement_time ", nativeQuery = true)
+    List<Object[]> findUsageGroupByTimeByGenerateName(@Param("chaosId") Long chaosId, @Param("generateName") String generateName);
+
 }

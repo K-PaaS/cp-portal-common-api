@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -137,7 +136,7 @@ public class ChaosService {
      *  Resource usage by selected Pods during chaos 조회(Get Resource Usage by selected Pods during chaos)
      */
     public ResourceUsage getResourceUsageByPod(String chaosName) {
-        String chaosId = stressChaosRepository.findByName(chaosName);
+        Long chaosId = stressChaosRepository.findByName(chaosName);
         List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
         ResourceUsage  resourceUsage = new ResourceUsage();
         ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
@@ -147,8 +146,8 @@ public class ChaosService {
             resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
             List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
 
-            List<String> cpu = new ArrayList<>();
-            List<String> memory = new ArrayList<>();
+            List<Long> cpu = new ArrayList<>();
+            List<Long> memory = new ArrayList<>();
             List<Integer> appStatus = new ArrayList<>();
 
             for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
@@ -173,34 +172,33 @@ public class ChaosService {
      *  Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)
      */
     public ResourceUsage getResourceUsageByWorkload(String chaosName) {
-        String chaosId = stressChaosRepository.findByName(chaosName);
-        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
+        Long chaosId = stressChaosRepository.findByName(chaosName);
+        List<String> generateNameList = chaosResourceRepository.findGenerateNameByChaosId(chaosId);
         ResourceUsage  resourceUsage = new ResourceUsage();
         ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
         int count = 0;
 
-        for(ChaosResource chaosResource : chaosResourceList ){
-            resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
-            List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
+        for(String generateName : generateNameList ) {
+            resourceUsageItem.getResourceName().add(generateName);
+            List<Object[]> isChaosResourceUsageList = chaosResourceUsageRepository.findUsageGroupByTimeByGenerateName(chaosId, generateName);
+            List<ChaosResourceUsage> chaosResourceUsageList = isChaosResourceUsageList.stream()
+                    .map(x -> new ChaosResourceUsage(x[0], ((BigDecimal) x[1]).longValue(), ((BigDecimal ) x[2]).longValue()))
+                    .collect(Collectors.toList());
 
-            List<String> cpu = new ArrayList<>();
-            List<String> memory = new ArrayList<>();
-            List<Integer> appStatus = new ArrayList<>();
+            List<Long> cpu = new ArrayList<>();
+            List<Long> memory = new ArrayList<>();
 
             for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
                 cpu.add(chaosResourceUsage.getCpu());
                 memory.add(chaosResourceUsage.getMemory());
-                appStatus.add(chaosResourceUsage.getAppStatus());
-                if(count == 0){
+                if (count == 0) {
                     resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
                 }
             }
             count++;
             resourceUsageItem.getCpu().add(cpu);
             resourceUsageItem.getMemory().add(memory);
-            resourceUsageItem.getAppStatus().add(appStatus);
         }
-
         resourceUsage.addItem(resourceUsageItem);
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
@@ -209,24 +207,22 @@ public class ChaosService {
      *  Resource usage by node during chaos 조회(Get Resource usage by node during chaos)
      */
     public ResourceUsage getResourceUsageByNode(String chaosName) {
-        String chaosId = stressChaosRepository.findByName(chaosName);
-        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChoice(chaosId);
+        Long chaosId = stressChaosRepository.findByName(chaosName);
+        List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChaosId(chaosId, "node");
+        System.out.println("chaosResourceList : " + chaosResourceList);
         ResourceUsage  resourceUsage = new ResourceUsage();
         ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
         int count = 0;
 
-        for(ChaosResource chaosResource : chaosResourceList ){
+        for(ChaosResource chaosResource  : chaosResourceList ){
             resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
             List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
-
-            List<String> cpu = new ArrayList<>();
-            List<String> memory = new ArrayList<>();
-            List<Integer> appStatus = new ArrayList<>();
+            List<Long> cpu = new ArrayList<>();
+            List<Long> memory = new ArrayList<>();
 
             for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
                 cpu.add(chaosResourceUsage.getCpu());
                 memory.add(chaosResourceUsage.getMemory());
-                appStatus.add(chaosResourceUsage.getAppStatus());
                 if(count == 0){
                     resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
                 }
@@ -234,10 +230,10 @@ public class ChaosService {
             count++;
             resourceUsageItem.getCpu().add(cpu);
             resourceUsageItem.getMemory().add(memory);
-            resourceUsageItem.getAppStatus().add(appStatus);
         }
 
         resourceUsage.addItem(resourceUsageItem);
+        System.out.println("resourceUsage : " + resourceUsage);
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
 }
