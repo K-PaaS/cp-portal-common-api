@@ -21,7 +21,7 @@ public class SshKeysService {
     private final SshKeysRepository sshKeysRepository;
 
     /**
-     * Instantiates a new Clusters service
+     * Instantiates a new SshKeys service
      *
      * @param sshKeysRepository the sshKeys repository
      * @param commonService the common Service
