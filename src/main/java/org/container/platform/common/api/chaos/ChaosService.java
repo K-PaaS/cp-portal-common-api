@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -146,24 +148,55 @@ public class ChaosService {
             resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
             List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
 
-            List<Long> cpu = new ArrayList<>();
-            List<Long> memory = new ArrayList<>();
+            List<Integer> cpu = new ArrayList<>();
+            List<Integer> memory = new ArrayList<>();
             List<Integer> appStatus = new ArrayList<>();
 
-            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
-                cpu.add(chaosResourceUsage.getCpu());
-                memory.add(chaosResourceUsage.getMemory());
-                appStatus.add(chaosResourceUsage.getAppStatus());
-                if(count == 0){
-                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
+
+            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+                for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                    cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                    memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                    appStatus.add(chaosResourceUsage.getAppStatus());
+                    if(count == 0){
+                        resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                    }
+                }
+            }else {// 측정시간이 6번이 아닌경우
+                if(count == 0) {
+                    for (int i = 0; i < 6; i++) {
+                        LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
+                        resourceUsageItem.getTime().add(measurementTime.format(formatter));
+                    }
+                }
+
+                for(String measurementTime : resourceUsageItem.getTime()) {
+                    boolean check = false;
+                    for (ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList) {
+                        if (chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime().equals(measurementTime)) {
+                            cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                            memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                            appStatus.add(chaosResourceUsage.getAppStatus());
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if (!check) {
+                        cpu.add(-1);
+                        memory.add(-1);
+                        appStatus.add(-1);
+                    }
                 }
             }
+
             count++;
             resourceUsageItem.getCpu().add(cpu);
             resourceUsageItem.getMemory().add(memory);
             resourceUsageItem.getAppStatus().add(appStatus);
         }
-
         resourceUsage.addItem(resourceUsageItem);
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
@@ -185,16 +218,46 @@ public class ChaosService {
                     .map(x -> new ChaosResourceUsage(x[0], ((BigDecimal) x[1]).longValue(), ((BigDecimal ) x[2]).longValue()))
                     .collect(Collectors.toList());
 
-            List<Long> cpu = new ArrayList<>();
-            List<Long> memory = new ArrayList<>();
+            List<Integer> cpu = new ArrayList<>();
+            List<Integer> memory = new ArrayList<>();
 
-            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
-                cpu.add(chaosResourceUsage.getCpu());
-                memory.add(chaosResourceUsage.getMemory());
-                if (count == 0) {
-                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
+
+            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+                for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                    cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                    memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                    if(count == 0){
+                        resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                    }
+                }
+            }else {// 측정시간이 6번이 아닌경우
+                if(count == 0) {
+                    for (int i = 0; i < 6; i++) {
+                        LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
+                        resourceUsageItem.getTime().add(measurementTime.format(formatter));
+                    }
+                }
+
+                for(String measurementTime : resourceUsageItem.getTime()) {
+                    boolean check = false;
+                    for (ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList) {
+                        if (chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime().equals(measurementTime)) {
+                            cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                            memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if (!check) {
+                        cpu.add(-1);
+                        memory.add(-1);
+                    }
                 }
             }
+
             count++;
             resourceUsageItem.getCpu().add(cpu);
             resourceUsageItem.getMemory().add(memory);
@@ -209,7 +272,6 @@ public class ChaosService {
     public ResourceUsage getResourceUsageByNode(String chaosName) {
         Long chaosId = stressChaosRepository.findByName(chaosName);
         List<ChaosResource> chaosResourceList = chaosResourceRepository.findAllByChaosId(chaosId, "node");
-        System.out.println("chaosResourceList : " + chaosResourceList);
         ResourceUsage  resourceUsage = new ResourceUsage();
         ResourceUsageItem resourceUsageItem = new ResourceUsageItem();
         int count = 0;
@@ -217,23 +279,53 @@ public class ChaosService {
         for(ChaosResource chaosResource  : chaosResourceList ){
             resourceUsageItem.getResourceName().add(chaosResource.getResourceName());
             List<ChaosResourceUsage>  chaosResourceUsageList = chaosResourceUsageRepository.findAllByResourceId(chaosResource.getResourceId());
-            List<Long> cpu = new ArrayList<>();
-            List<Long> memory = new ArrayList<>();
 
-            for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
-                cpu.add(chaosResourceUsage.getCpu());
-                memory.add(chaosResourceUsage.getMemory());
-                if(count == 0){
-                    resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+            List<Integer> cpu = new ArrayList<>();
+            List<Integer> memory = new ArrayList<>();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
+
+            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+                for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
+                    cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                    memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                    if(count == 0){
+                        resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
+                    }
+                }
+            }else {// 측정시간이 6번이 아닌경우
+                if(count == 0) {
+                    for (int i = 0; i < 6; i++) {
+                        LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
+                        resourceUsageItem.getTime().add(measurementTime.format(formatter));
+                    }
+                }
+
+                for(String measurementTime : resourceUsageItem.getTime()) {
+                    boolean check = false;
+                    for (ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList) {
+                        if (chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime().equals(measurementTime)) {
+                            cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
+                            memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
+                            check = true;
+                            break;
+                        }
+                    }
+
+                    if (!check) {
+                        cpu.add(-1);
+                        memory.add(-1);
+                    }
                 }
             }
+
             count++;
             resourceUsageItem.getCpu().add(cpu);
             resourceUsageItem.getMemory().add(memory);
         }
-
         resourceUsage.addItem(resourceUsageItem);
-        System.out.println("resourceUsage : " + resourceUsage);
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
     }
+
 }
