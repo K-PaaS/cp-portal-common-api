@@ -155,7 +155,7 @@ public class ChaosService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
 
-            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+            if(chaosResourceUsageList.size() == 12) { // 모든 측정 시간이 있는 경우
                 for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
                     cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
                     memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
@@ -164,9 +164,9 @@ public class ChaosService {
                         resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
                     }
                 }
-            }else {// 측정시간이 6번이 아닌경우
+            }else {// 모든 측정 시간이 없는 경우
                 if(count == 0) {
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 12; i++) {
                         LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
                         resourceUsageItem.getTime().add(measurementTime.format(formatter));
                     }
@@ -224,7 +224,7 @@ public class ChaosService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
 
-            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+            if(chaosResourceUsageList.size() == 12) { // 모든 측정 시간이 있는 경우
                 for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
                     cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
                     memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
@@ -232,9 +232,9 @@ public class ChaosService {
                         resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
                     }
                 }
-            }else {// 측정시간이 6번이 아닌경우
+            }else {// 모든 측정 시간이 없는 경우
                 if(count == 0) {
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 12; i++) {
                         LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
                         resourceUsageItem.getTime().add(measurementTime.format(formatter));
                     }
@@ -286,7 +286,7 @@ public class ChaosService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
             LocalDateTime firstDateTime = LocalDateTime.parse(chaosResourceUsageList.get(0).getChaosResourceUsageId().getMeasurementTime(), formatter);
 
-            if(chaosResourceUsageList.size() == 6) { // 모든 측정 시간이 있는 경우(1분동안 최대 6번)
+            if(chaosResourceUsageList.size() == 12) { // 모든 측정 시간이 있는 경우
                 for(ChaosResourceUsage chaosResourceUsage : chaosResourceUsageList){
                     cpu.add(Math.toIntExact(chaosResourceUsage.getCpu()));
                     memory.add(Math.toIntExact(chaosResourceUsage.getMemory()));
@@ -294,9 +294,9 @@ public class ChaosService {
                         resourceUsageItem.getTime().add(chaosResourceUsage.getChaosResourceUsageId().getMeasurementTime());
                     }
                 }
-            }else {// 측정시간이 6번이 아닌경우
+            }else {// 모든 측정 시간이 없는 경우
                 if(count == 0) {
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 12; i++) {
                         LocalDateTime measurementTime = firstDateTime.plusSeconds(i * 10);
                         resourceUsageItem.getTime().add(measurementTime.format(formatter));
                     }
