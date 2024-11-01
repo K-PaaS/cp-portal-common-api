@@ -44,6 +44,9 @@ public class VaultDatabaseSecrets {
     @Column(name = "flag", nullable = false)
     private String flag;
 
+    @Column(name = "created", nullable = false)
+    private String created;
+
     public VaultDatabaseSecrets(String resultCode, String resultMessage) {
         this.resultCode = resultCode;
         this.resultMessage = resultMessage;
