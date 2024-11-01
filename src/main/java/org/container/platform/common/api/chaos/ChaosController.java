@@ -90,7 +90,6 @@ public class ChaosController {
     @ApiOperation(value="Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)", nickname="getResourceUsageByWorkload")
     @GetMapping("/resourceUsageByWorkload/{chaosName}")
     public ResourceUsage getResourceUsageByWorkload(@PathVariable String chaosName) {
-     System.out.println("getResourceUsageByWorkload");
      return chaosService.getResourceUsageByWorkload(chaosName);
     }
 
@@ -102,8 +101,6 @@ public class ChaosController {
     @ApiOperation(value="Resource usage by node during chaos 조회(Get Resource usage by node during chaos)", nickname="getResourceUsageByNode")
     @GetMapping("/resourceUsageByNode/{chaosName}")
     public ResourceUsage getResourceUsageByNode(@PathVariable String chaosName) {
-     System.out.println("getResourceUsageByNode");
-
      return chaosService.getResourceUsageByNode(chaosName);
     }
 
