@@ -23,4 +23,6 @@ public interface StressChaosRepository extends JpaRepository<StressChaos, Long>,
     @Query(value = "SELECT chaos_id FROM cp_stress_chaos WHERE chaos_name = :chaosName ;", nativeQuery = true)
     Long findByName(@Param("chaosName") String chaosName);
 
+    @Query(value = "DELETE FROM cp_stress_chaos WHERE chaos_name = :chaosName ;", nativeQuery = true)
+    void deleteByChaosName(@Param("chaosName") String chaosName);
 }

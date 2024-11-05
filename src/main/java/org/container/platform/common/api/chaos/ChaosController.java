@@ -104,4 +104,15 @@ public class ChaosController {
      return chaosService.getResourceUsageByNode(chaosName);
     }
 
+ /**
+  * StressChaos 정보 삭제(Delete StressChaos Info)
+  *
+  * @return the stressChaos
+  */
+ @ApiOperation(value="StressChaos 정보 삭제(Delete StressChaos Info)", nickname="deleteStressChaos")
+ @DeleteMapping(value = "/stressChaos/{chaosName:.+}")
+ public StressChaos deleteStressChaos(@PathVariable String chaosName) {
+  return chaosService.deleteStressChaos(chaosName);
+ }
+
 }

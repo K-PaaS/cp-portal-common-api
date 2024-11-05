@@ -1,5 +1,6 @@
 package org.container.platform.common.api.chaos;
 
+import org.container.platform.common.api.clusters.Clusters;
 import org.container.platform.common.api.common.CommonService;
 import org.container.platform.common.api.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,6 +327,16 @@ public class ChaosService {
         }
         resourceUsage.addItem(resourceUsageItem);
         return (ResourceUsage) commonService.setResultModel(resourceUsage, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     * StressChaos 정보 삭제(Delete StressChaos Info)
+     *
+     * @return the stressChaos
+     */
+    public StressChaos deleteStressChaos(String chaosName) {
+        stressChaosRepository.deleteByChaosName(chaosName);
+        return (StressChaos) commonService.setResultModel(new StressChaos(), Constants.RESULT_STATUS_SUCCESS);
     }
 
 }
