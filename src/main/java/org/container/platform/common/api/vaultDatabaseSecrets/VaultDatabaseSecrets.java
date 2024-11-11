@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @since 2024.10.16
  **/
 @Entity
-@Table(name = "cp_vault_database_secret")
+@Table(name = "cp_vault_database_secret", uniqueConstraints={@UniqueConstraint(columnNames = {"name"})})
 @Data
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class VaultDatabaseSecrets {
@@ -26,7 +26,7 @@ public class VaultDatabaseSecrets {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "db_type", nullable = false)
