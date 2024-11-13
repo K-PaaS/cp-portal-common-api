@@ -33,17 +33,17 @@ public class ChaosController {
     }
 
      /**
-      * StressChaos Resources Data 생성(Create StressChaos Resources Data)
+      * StressChaos Data 생성(Create StressChaos Data)
       *
       * @return the StressChaosDataList
       */
-     @ApiOperation(value="StressChaos Resources Data 생성(Create StressChaos Resources Data)", nickname="createStressChaosResourcesData")
+     @ApiOperation(value="StressChaos Data 생성(Create StressChaos Data)", nickname="createStressChaosData")
      @ApiImplicitParams({
-             @ApiImplicitParam(name = "stressChaosResourcesData", value = "createStressChaosResourcesData 생성", required = true, dataType = "StressChaosDataResourcesList", paramType = "body", dataTypeClass = StressChaosResourcesDataList.class)
+             @ApiImplicitParam(name = "stressChaosData", value = "createStressChaosData 생성", required = true, dataType = "StressChaosDataList", paramType = "body", dataTypeClass = StressChaos.class)
      })
-     @PostMapping("/stressChaosResourceList")
-     public StressChaosResourcesDataList createStressChaosResourcesData(@RequestBody StressChaosResourcesDataList stressChaosResourcesDataList) {
-      return chaosService.createStressChaosResourcesData(stressChaosResourcesDataList);
+     @PostMapping("/stressChaos")
+     public StressChaos createStressChaosData(@RequestBody StressChaos stressChaos) {
+      return chaosService.createStressChaos(stressChaos);
      }
 
     /**

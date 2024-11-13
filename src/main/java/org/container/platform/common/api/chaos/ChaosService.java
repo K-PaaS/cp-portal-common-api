@@ -45,32 +45,6 @@ public class ChaosService {
         this.chaosResourceUsageRepository = chaosResourceUsageRepository;
     }
 
-
-    /**
-     *  StressChaos 정보 저장(Create StressChaos Info)
-     *
-     */
-    public StressChaosResourcesDataList createStressChaosResourcesData(StressChaosResourcesDataList stressChaosResourcesDataList) {
-        StressChaos stressChaos = new StressChaos();
-        stressChaos.setChaosName(stressChaosResourcesDataList.getStressChaos().getChaosName());
-        stressChaos.setNamespaces(stressChaosResourcesDataList.getStressChaos().getNamespaces());
-        stressChaos.setCreationTime(stressChaosResourcesDataList.getStressChaos().getCreationTime());
-        stressChaos.setEndTime(stressChaosResourcesDataList.getStressChaos().getEndTime());
-        stressChaos.setDuration(stressChaosResourcesDataList.getStressChaos().getDuration());
-
-        createStressChaos(stressChaos);
-        List<Long> resultResourceIds = new ArrayList<>();
-
-        for(ChaosResource chaosResource : stressChaosResourcesDataList.getChaosResource()){
-            chaosResource.setStressChaos(getStressChaosChaosId(stressChaos.getChaosName(), stressChaos.getNamespaces()));
-            ChaosResource resultChaosResource = createChaosResource(chaosResource);
-            resultResourceIds.add(resultChaosResource.getResourceId());
-        }
-        stressChaosResourcesDataList.setResultList(resultResourceIds);
-
-        return (StressChaosResourcesDataList) commonService.setResultModel(stressChaosResourcesDataList, Constants.RESULT_STATUS_SUCCESS);
-    }
-
     /**
      *  StressChaos 정보 저장(Create stressChaos Info)
      *
