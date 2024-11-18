@@ -35,26 +35,50 @@ public class ChaosController {
      /**
       * StressChaos Data 생성(Create StressChaos Data)
       *
-      * @return the StressChaosDataList
+      * @return the StressChaos
       */
      @ApiOperation(value="StressChaos Data 생성(Create StressChaos Data)", nickname="createStressChaosData")
-     @ApiImplicitParams({
-             @ApiImplicitParam(name = "stressChaosData", value = "createStressChaosData 생성", required = true, dataType = "StressChaosDataList", paramType = "body", dataTypeClass = StressChaos.class)
-     })
+     @ApiImplicitParam(name = "stressChaosData", value = "createStressChaosData 생성", required = true, dataType = "StressChaos", paramType = "body", dataTypeClass = StressChaos.class)
      @PostMapping("/stressChaos")
      public StressChaos createStressChaosData(@RequestBody StressChaos stressChaos) {
       return chaosService.createStressChaos(stressChaos);
      }
+
+     /**
+      * StressChaos 조회(Get StressChaos)
+      *
+      * @return the StressChaos
+      */
+     @ApiOperation(value="StressChaos 조회(Get StressChaos)", nickname="getStressChaos")
+     @GetMapping("/stressChaos")
+     public StressChaos getStressChaos(@RequestParam(value = "chaosName") String chaosName, @RequestParam(value = "namespace") String namespace) {
+      return chaosService.getStressChaos(chaosName, namespace);
+     }
+
+     /**
+      * Chaos Resources Data 생성(Create Chaos Resources Data)
+      *
+      * @return the chaosResourceList
+      */
+     @ApiOperation(value="Chaos Resources Data 생성(Create Chaos Resources Data)", nickname="createStressChaosData")
+     @ApiImplicitParams({
+             @ApiImplicitParam(name = "chaosResourcesData ", value = "createChaosResources 생성", required = true, dataType = "ChaosResourceList", paramType = "body", dataTypeClass = ChaosResourceList.class)
+     })
+     @PostMapping("/chaosResourceList")
+     public ChaosResourceList createChaosResources(@RequestBody ChaosResourceList chaosResourceList) {
+      return chaosService.createChaosResources(chaosResourceList);
+     }
+
 
     /**
      * ChaosResource 정보 목록 조회(Get ChaosResource info list)
      *
      * @return the ChaosResource info list
      */
-    @ApiOperation(value="ChaosResource 정보 목록 조회(Get ChaosResource info list)", nickname="getChaosResourcesList")
-    @GetMapping("/chaosResourcesList")
-    public ChaosResourcesList getChaosResourcesList(@RequestParam(value = "resourceId") List<Long> resourceIds) {
-        return chaosService.getChaosResourcesList(resourceIds);
+    @ApiOperation(value="ChaosResource 정보 목록 조회(Get ChaosResource info list)", nickname="getChaosResourceList")
+    @GetMapping("/chaosResourceList")
+    public ChaosResourceList getChaosResourceList(@RequestParam(value = "chaosId") Long chaosId) {
+        return chaosService.getChaosResourceList(chaosId);
     }
 
     /**
@@ -104,15 +128,15 @@ public class ChaosController {
      return chaosService.getResourceUsageByNode(chaosName);
     }
 
- /**
-  * StressChaos 정보 삭제(Delete StressChaos Info)
-  *
-  * @return the stressChaos
-  */
- @ApiOperation(value="StressChaos 정보 삭제(Delete StressChaos Info)", nickname="deleteStressChaos")
- @DeleteMapping(value = "/stressChaos/{chaosName:.+}")
- public StressChaos deleteStressChaos(@PathVariable String chaosName) {
-  return chaosService.deleteStressChaos(chaosName);
- }
+    /**
+     * StressChaos 정보 삭제(Delete StressChaos Info)
+     *
+     * @return the stressChaos
+     */
+    @ApiOperation(value="StressChaos 정보 삭제(Delete StressChaos Info)", nickname="deleteStressChaos")
+    @DeleteMapping(value = "/stressChaos/{chaosName:.+}")
+    public StressChaos deleteStressChaos(@PathVariable String chaosName) {
+     return chaosService.deleteStressChaos(chaosName);
+    }
 
 }

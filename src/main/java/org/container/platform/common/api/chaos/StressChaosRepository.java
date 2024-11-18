@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface StressChaosRepository extends JpaRepository<StressChaos, Long>, JpaSpecificationExecutor<StressChaos> {
-    StressChaos findByChaosNameAndNamespaces(String chaosName, String namespaces);
+
+    @Query(value = "SELECT * FROM cp_stress_chaos WHERE chaos_name = :chaosName AND namespaces = :namespace ;", nativeQuery = true)
+    StressChaos findByChaosNameAndNamespaces(@Param("chaosName") String chaosName, @Param("namespace") String namespace);
 
     @Query(value = "SELECT chaos_id FROM cp_stress_chaos WHERE chaos_name = :chaosName ;", nativeQuery = true)
     Long findByName(@Param("chaosName") String chaosName);

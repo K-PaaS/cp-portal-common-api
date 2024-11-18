@@ -62,12 +62,41 @@ public class ChaosService {
     }
 
     /**
+     * StressChaos 조회(Get StressChaos)
+     *
+     */
+    public StressChaos getStressChaos(String chaosName, String namespace) {
+        StressChaos stressChaos = stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespace);
+        return (StressChaos) commonService.setResultModel(stressChaos, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+
+    /**
+     *  Chaos Resources 정보 저장(Create Chaos Resources Info)
+     *
+     */
+    public ChaosResourceList createChaosResources(ChaosResourceList chaosResourcesList) {
+        for(ChaosResource chaosResource : chaosResourcesList.getItems()){
+            createChaosResource(chaosResource);
+        }
+
+        return (ChaosResourceList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
      *  Chaos Resource 정보 저장(Create chaos resource Info)
      */
     public ChaosResource createChaosResource(ChaosResource chaosResource) {
         ChaosResource chaosResourceinfo = new ChaosResource();
+        boolean exists = chaosResourceRepository.existsByChaosIdAndResourceName(
+                chaosResource.getStressChaos().getChaosId(),
+                chaosResource.getResourceName()
+                );
+
         try {
-            chaosResourceinfo = chaosResourceRepository.save(chaosResource);
+            if (!exists) {
+                chaosResourceinfo = chaosResourceRepository.save(chaosResource);
+            }
 
         } catch (Exception e) {
             chaosResourceinfo.setResultMessage(e.getMessage());
@@ -78,20 +107,13 @@ public class ChaosService {
     }
 
     /**
-     * StressChaos chaosId 조회(Get StressChaos chaosId)
-     */
-    public StressChaos getStressChaosChaosId(String chaosName, String namespaces) {
-        return stressChaosRepository.findByChaosNameAndNamespaces(chaosName, namespaces);
-    }
-
-    /**
      * ChaosResource 정보 목록 조회(Get ChaosResource info list)
      *
      * @return the ChaosResource info list
      */
-    public ChaosResourcesList getChaosResourcesList(List<Long> resourceIds) {
-        ChaosResourcesList chaosResourcesList = new ChaosResourcesList(chaosResourceRepository.findByResourceIdIn(resourceIds));
-        return (ChaosResourcesList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
+    public ChaosResourceList getChaosResourceList(Long chaosId) {
+        ChaosResourceList chaosResourcesList = new ChaosResourceList(chaosResourceRepository.findByChaosId(chaosId));
+        return (ChaosResourceList) commonService.setResultModel(chaosResourcesList, Constants.RESULT_STATUS_SUCCESS);
     }
 
     /**
