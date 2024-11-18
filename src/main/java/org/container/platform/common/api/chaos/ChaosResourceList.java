@@ -1,8 +1,6 @@
 package org.container.platform.common.api.chaos;
 
 import lombok.Data;
-
-import javax.persistence.Column;
 import java.util.List;
 
 /**
@@ -14,15 +12,15 @@ import java.util.List;
  */
 @Data
 
-public class ChaosResourcesList {
+public class ChaosResourceList {
     private String resultCode;
     private String resultMessage;
     private List<ChaosResource> items;
 
-    public ChaosResourcesList(){
+    public ChaosResourceList(){
 
     }
-    public ChaosResourcesList( List<ChaosResource> chaosResources) {
+    public ChaosResourceList( List<ChaosResource> chaosResources) {
         this.items = chaosResources;
     }
 
