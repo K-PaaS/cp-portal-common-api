@@ -107,6 +107,17 @@ public class ChaosController {
     }
 
     /**
+     * Resource usage by Pods during chaos 조회(Get Resource Usage by Pods during chaos)
+     *
+     * @return the ResourceUsage
+     */
+    @ApiOperation(value="Resource usage by Pods during chaos 조회(Get Resource Usage by Pods during chaos)", nickname="getResourceUsageByHpaPod")
+    @GetMapping("/resourceUsageByHpaPod/{chaosName}")
+    public ResourceUsage getResourceUsageByHpaPod(@PathVariable String chaosName) {
+     return chaosService.getResourceUsageByHpaPod(chaosName);
+    }
+
+    /**
      * Resource usage by workload for selected Pods during chao 조회(Get Resource usage by workload for selected Pods during chao)
      *
      * @return the ResourceUsage
