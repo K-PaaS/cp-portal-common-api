@@ -77,7 +77,7 @@ public class VaultDatabaseSecretsService {
     /**
      * VaultDatabaseSecrets 정보 삭제(Delete VaultDatabaseSecrets Info)
      *
-     * @param name the vault database secrets id
+     * @param name the vault database secrets name
      * @return the vault database secrets
      */
     @Transactional
