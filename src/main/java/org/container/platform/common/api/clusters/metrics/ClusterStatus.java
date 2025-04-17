@@ -2,7 +2,7 @@ package org.container.platform.common.api.clusters.metrics;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cp_metric_cluster_status")

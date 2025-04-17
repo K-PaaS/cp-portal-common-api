@@ -1,8 +1,8 @@
 package org.container.platform.common.api.clusters.clusterlogs;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @since 2022.08.01
  **/
+@Tag(name = "ClusterLogsController v1")
 @RestController
 @RequestMapping(value = "/clusters/logs")
 public class ClusterLogsController {
@@ -36,10 +37,8 @@ public class ClusterLogsController {
      * @param clusterId the cluster id
      * @return the Clusters
      */
-    @ApiOperation(value="Clusters Log 정보 조회(Get Clusters Info)", nickname="getClusters")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "clusterId", value = "클러스터 아이디", required = true, dataType = "String", paramType = "path", dataTypeClass = String.class)
-    })
+    @Operation(summary = "Clusters Log 정보 조회(Get Clusters Info)", operationId = "getClusterLogs")
+    @Parameter(name = "clusterId", description = "클러스터 아이디", required = true)
     @GetMapping(value = "/{clusterId:.+}")
     public ClusterLogsList getClusterLogs(@PathVariable String clusterId) {
         return clusterLogsService.getClusterLogs(clusterId);

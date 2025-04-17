@@ -3,8 +3,8 @@ package org.container.platform.common.api.users;
 import lombok.Data;
 import org.container.platform.common.api.common.Constants;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import java.util.List;
 
 /**

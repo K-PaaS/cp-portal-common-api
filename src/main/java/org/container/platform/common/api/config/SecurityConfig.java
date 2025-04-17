@@ -5,17 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * Security Config 클래스
@@ -52,17 +56,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").hasRole("USER")
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .cors().configurationSource(corsConfiguration());
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/**").access(new WebExpressionAuthorizationManager("hasRole('USER')"))
+                        .anyRequest().authenticated())
+                .httpBasic(withDefaults())
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfiguration()));
         return http.build();
     }
 
@@ -83,10 +83,10 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers(
-                "/v2/api-docs",
+        return (web) -> web.ignoring().requestMatchers(
+                "/v3/api-docs/**",
                 "/swagger-ui/**",
-                "/swagger-resources",
+                "/swagger-ui.html",
                 "/actuator/**");
     }
 

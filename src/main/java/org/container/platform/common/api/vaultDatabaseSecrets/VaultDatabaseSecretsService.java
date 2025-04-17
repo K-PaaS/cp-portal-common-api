@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * VaultDatabaseSecrets Service 클래스
@@ -100,6 +101,27 @@ public class VaultDatabaseSecretsService {
             target.setAppName(vaultDatabaseSecrets.getAppName());
             target.setAppNamespace(vaultDatabaseSecrets.getAppNamespace());
             target.setFlag(vaultDatabaseSecrets.getFlag());
+            target = vaultDatabaseSecretsRepository.save(target);
+        } catch (Exception e) {
+            target.setResultMessage(e.getMessage());
+            return (VaultDatabaseSecrets) commonService.setResultModel(target, Constants.RESULT_STATUS_FAIL);
+        }
+
+        return (VaultDatabaseSecrets) commonService.setResultModel(target, Constants.RESULT_STATUS_SUCCESS);
+    }
+
+    /**
+     * VaultDatabaseSecrets 상태 정보 수정(Update VaultDatabaseSecrets Status Info)
+     *
+     * @param vaultDatabaseSecrets the vault database secrets
+     * @return the vault database secrets
+     */
+    @Transactional
+    public VaultDatabaseSecrets modifyVaultDatabaseSecretsStatus(VaultDatabaseSecrets vaultDatabaseSecrets) {
+        VaultDatabaseSecrets target = new VaultDatabaseSecrets();
+        try {
+            target = vaultDatabaseSecretsRepository.findByName(vaultDatabaseSecrets.getName());
+            target.setStatus(vaultDatabaseSecrets.getStatus());
             target = vaultDatabaseSecretsRepository.save(target);
         } catch (Exception e) {
             target.setResultMessage(e.getMessage());

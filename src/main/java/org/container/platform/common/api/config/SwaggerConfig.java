@@ -2,15 +2,11 @@ package org.container.platform.common.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+
 
 /**
  * Swagger Config 클래스
@@ -21,34 +17,25 @@ import java.util.Set;
  */
 @Configuration
 public class SwaggerConfig {
-
-    private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<>(
-            Arrays.asList("application/json"));
-
     @Bean
-    public Docket api() {
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("v1.0")
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.container.platform"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo())
-                .produces(DEFAULT_PRODUCES_AND_CONSUMES)
-                .consumes(DEFAULT_PRODUCES_AND_CONSUMES);
-
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(apiInfo());
     }
 
-    @Bean
-    public ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
+    private Info apiInfo() {
+        return new Info()
                 .title("K-PaaS Container Platform Common API Docs")
                 .version("v1.0")
                 .description("This is a API Document created with swagger.")
-                .license("Apache2.0")
-                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
-                .build();
+                .license(getLicense());
     }
 
+    private License getLicense() {
+        License license = new License();
+        license.setName("Apache 2.0");
+        license.setIdentifier("Apache-2.0");
+        return license;
+    }
 }
