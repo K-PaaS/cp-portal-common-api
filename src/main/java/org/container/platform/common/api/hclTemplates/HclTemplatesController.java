@@ -1,6 +1,9 @@
 package org.container.platform.common.api.hclTemplates;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @since 2022.06.30
  **/
+@Tag(name = "HclTemplatesController v1")
 @RestController
 @RequestMapping(value = "/hclTemplates")
 public class HclTemplatesController {
@@ -30,6 +34,7 @@ public class HclTemplatesController {
      *
      * @return the hclTemplatesList
      */
+    @Operation(summary = "HclTemplates 목록 조회(Get HclTemplates List)", operationId = "getHclTemplatesList")
     @GetMapping
     public HclTemplatesList getHclTemplatesList() {
         return hclTemplatesService.getHclTemplatesList();
@@ -41,7 +46,8 @@ public class HclTemplatesController {
      *
      * @return the HclTemplatesList
      */
-    @ApiOperation(value="HclTemplates 타입 별 목록 조회(Get HclTemplates List By Provider)", nickname="getHclTemplatesListByProvider")
+    @Operation(summary = "Provider별 HclTemplates 목록 조회(Get HclTemplates List By Provider)", operationId = "getHclTemplatesListByProvider")
+    @Parameter(name = "provider", description = "프로바이더", required = true)
     @GetMapping(value = "/provider/{provider:.+}")
     public HclTemplatesList getHclTemplatesListByProvider(@PathVariable String provider) {
         return hclTemplatesService.getHclTemplatesListByProvider(provider);}
@@ -53,6 +59,8 @@ public class HclTemplatesController {
      * @param id the hclTemplates id
      * @return the HclTemplates
      */
+    @Operation(summary = "HclTemplates 정보 조회(Get HclTemplates Info)", operationId = "getHclTemplates")
+    @Parameter(name = "id", description = "아이디", required = true)
     @GetMapping(value = "/{id:.+}")
     public HclTemplates getHclTemplates(@PathVariable Long id) {
         return hclTemplatesService.getHclTemplates(id);
@@ -65,6 +73,8 @@ public class HclTemplatesController {
      * @param hclTemplates the hclTemplates
      * @return the hclTemplates
      */
+    @Operation(summary = "HclTemplates 정보 저장(Create HclTemplates Info)", operationId = "createHclTemplates")
+    @Parameter(name = "hclTemplates", description = "hclTemplates", required = true, schema = @Schema(implementation = HclTemplates.class))
     @PostMapping
     public HclTemplates createHclTemplates(@RequestBody HclTemplates hclTemplates) {
         return hclTemplatesService.createHclTemplates(hclTemplates);
@@ -77,6 +87,8 @@ public class HclTemplatesController {
      * @param id the id
      * @return the hclTemplates
      */
+    @Operation(summary = "HclTemplates 정보 삭제(Delete HclTemplates Info)", operationId = "deleteHclTemplates")
+    @Parameter(name = "id", description = "아이디", required = true)
     @DeleteMapping(value = "/{id:.+}")
     public HclTemplates deleteHclTemplates(@PathVariable Long id) {
         return hclTemplatesService.deleteHclTemplates(id);
@@ -89,6 +101,8 @@ public class HclTemplatesController {
      * @param hclTemplates the hclTemplates
      * @return the hclTemplates
      */
+    @Operation(summary = "HclTemplates 정보 수정(Update HclTemplates Info)", operationId = "updateHclTemplates")
+    @Parameter(name = "hclTemplates", description = "hclTemplates", required = true, schema = @Schema(implementation = HclTemplates.class))
     @PutMapping
     public HclTemplates updateHclTemplates(@RequestBody HclTemplates hclTemplates) {
         return hclTemplatesService.modifyHclTemplates(hclTemplates);

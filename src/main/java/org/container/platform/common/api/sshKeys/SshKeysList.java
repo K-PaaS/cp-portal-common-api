@@ -2,7 +2,7 @@ package org.container.platform.common.api.sshKeys;
 
 import lombok.Data;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 import java.util.List;
 
 /**

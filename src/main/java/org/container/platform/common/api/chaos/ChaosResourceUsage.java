@@ -3,7 +3,7 @@ package org.container.platform.common.api.chaos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * ChaosResourceUsage 클래스

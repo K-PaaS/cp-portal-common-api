@@ -1,7 +1,7 @@
 package org.container.platform.common.api.vaultDatabaseSecrets;
 
 import lombok.Data;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * VaultDatabaseSecrets Model 클래스
@@ -28,6 +28,9 @@ public class VaultDatabaseSecrets {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "namespace")
+    private String namespace;
 
     @Column(name = "db_type", nullable = false)
     private String dbType;

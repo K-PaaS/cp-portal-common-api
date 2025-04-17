@@ -7,12 +7,45 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  datasource:
+    cp:
+      jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+      driver-class-name: org.mariadb.jdbc.Driver
+      validationQuery: SELECT 1
+      username: ${DATABASE_USER_ID}
+      password: ${DATABASE_USER_PASSWORD}
+    keycloak:
+      jdbc-url: jdbc:mysql://${DATABASE_URL}/${KEYCLOAK_DB_SCHEMA}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+      driver-class-name: org.mariadb.jdbc.Driver
+      validationQuery: SELECT 1
+      username: ${DATABASE_USER_ID}
+      password: ${DATABASE_USER_PASSWORD}
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+      show_sql: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
 management:
   endpoints:
     web:
       exposure:
         include: health
+
+server:
+  port: ${PORT:3334}
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: /home/1000/logs
 
 cp:
   defaultNamespace: cp-portal-temp-namespace
@@ -21,85 +54,3 @@ cp:
 keycloak:
   cpRealmId: ${KEYCLOAK_CP_REALM_ID}
   clusterAdminRole: cp-cluster-admin-role
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
-  cp:
-    datasource:
-      jdbc-url: jdbc:mysql://${DATABASE_URL}/${CP_PORTAL_DB_SCHEMA}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-      driver-class-name: org.mariadb.jdbc.Driver
-      validationQuery: SELECT 1
-      username: ${DATABASE_USER_ID}
-      password: ${DATABASE_USER_PASSWORD}
-  keycloak:
-    datasource:
-      jdbc-url: jdbc:mysql://${DATABASE_URL}/${KEYCLOAK_DB_SCHEMA}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-      driver-class-name: org.mariadb.jdbc.Driver
-      validationQuery: SELECT 1
-      username: ${DATABASE_USER_ID}
-      password: ${DATABASE_USER_PASSWORD}
-  jpa:
-    database: mysql
-    hibernate:
-      ddl-auto: none
-      show_sql: true
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    generate-ddl: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
-logging:
-  level:
-    ROOT: INFO
-  path: classpath:logback-spring.xml
-  file: logs/application.log
-
-server:
-  port: ${PORT:3334}
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  cp:
-    datasource:
-      jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-      driver-class-name: org.mariadb.jdbc.Driver
-      validationQuery: SELECT 1
-      username: ${DATABASE_USER_ID}
-      password: ${DATABASE_USER_PASSWORD}
-  keycloak:
-    datasource:
-      jdbc-url: jdbc:mysql://${DATABASE_URL}/${KEYCLOAK_DB_SCHEMA}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-      driver-class-name: org.mariadb.jdbc.Driver
-      validationQuery: SELECT 1
-      username: ${DATABASE_USER_ID}
-      password: ${DATABASE_USER_PASSWORD}
-  jpa:
-    database: mysql
-    hibernate:
-      ddl-auto: none
-      show_sql: true
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    generate-ddl: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
-logging:
-  level:
-    ROOT: INFO
-  path: classpath:logback-spring.xml
-  file: logs/application.log
-
-server:
-  port: ${PORT:3334}

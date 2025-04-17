@@ -3,7 +3,7 @@ package org.container.platform.common.api.clusters.clusterlogs;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @IdClass(ClusterLogsPk.class)

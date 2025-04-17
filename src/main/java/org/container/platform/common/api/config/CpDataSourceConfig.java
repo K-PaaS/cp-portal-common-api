@@ -13,7 +13,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 
@@ -25,7 +25,7 @@ public class CpDataSourceConfig {
 
     @Primary
     @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.cp.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.cp")
     public DataSource dataSource() {
 
         DataSource ds = DataSourceBuilder.create().build();
@@ -56,25 +56,6 @@ public class CpDataSourceConfig {
                 .build();
     }
 
-
-  /*  @Primary
-    @Bean(name = "entityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            EntityManagerFactoryBuilder builder,
-            @Qualifier("dataSource") DataSource dataSource,
-            Environment env) {
-        Map<String, Object> properties = new HashMap<String, Object>();
-        properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-
-        return builder
-                .dataSource(dataSource)
-                .packages("org.container.platform.common.api")
-                .persistenceUnit("first")
-                .properties(properties)
-                .build();
-    }
-*/
     @Primary
     @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager(

@@ -3,16 +3,16 @@
 <table>
 <thead>
   <tr>
-    <th>플랫폼</th>
-    <th><a href="https://github.com/K-PaaS/cp-deployment">컨테이너 플랫폼</a></th>
-    <th>&nbsp;&nbsp;&nbsp;<a href="https://github.com/K-PaaS/sidecar-deployment.git">사이드카</a>&nbsp;&nbsp;&nbsp;</th>
+    <th style="text-align:center;width=100;">플랫폼</th>
+    <th style="text-align:center;width=250;"><a href="https://github.com/K-PaaS/cp-deployment">컨테이너 플랫폼</a></th>
+    <th style="text-align:center;width=250;">&nbsp;&nbsp;&nbsp;<a href="https://github.com/K-PaaS/sidecar-deployment.git">사이드카</a>&nbsp;&nbsp;&nbsp;</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td align="center">포털</td>
     <td align="center"><a href="https://github.com/K-PaaS/cp-portal-release">CP 포털</a></td>
-    <td align="center">-</td>
+    <td align="center"><a href="https://github.com/K-PaaS/sidecar-deployment/tree/master/install-scripts/portal">사이드카 포털</a></td>
   </tr>
   <tr>
     <td rowspan="8">Component <br>/서비스</td>
@@ -24,7 +24,7 @@
     <td align="center"><a href="https://github.com/K-PaaS/sidecar-portal-api">Portal API</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/K-PaaS/cp-portal-common-api">🚩Common API</a></td>
+    <td align="center"><a href="https://github.com/K-PaaS/cp-portal-common-api">🚩 Common API</a></td>
     <td align="center"></td>
   </tr>
   <tr>
@@ -48,9 +48,9 @@
     <td align="center"></td>
   </tr>
 </tbody></table>
-
 <i>🚩 You are here.</i>
 
+<br>
 <br>
 
 ## K-PaaS 컨테이너 플랫폼 Common API
@@ -86,15 +86,15 @@ $ gradle build
 K-PaaS 컨테이너 플랫폼 Common API의 개발 환경은 다음과 같습니다.
 
 | Situation                      | Version |
-| ------------------------------ | ------- |
-| JDK                            | 8       |
-| Gradle                         | 6.9.2   |
-| Spring Boot                    | 2.7.3   |
-| Spring Boot Management         | 1.0.11.RELEASE  |
+| ------------------------------ |---------|
+| JDK                            | 17      |
+| Gradle                         | 8.10.0  |
+| Spring Boot                    | 3.4.4   |
+| Spring Boot Management         | 1.1.7   |
 | MariaDB Java Client            | 2.7.5   |
-| Lombok		                 | 1.18.12 |
-| Jacoco		                 | 0.8.5   |
-| Swagger	                     | 2.9.2   |
+| Lombok                         | 1.18.36 |
+| springdoc-openapi              | 2.8.4   |
+
 
 <br>
 
