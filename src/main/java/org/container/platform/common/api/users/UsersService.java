@@ -659,6 +659,19 @@ public class UsersService {
     }
 
 
+
+    /**
+     * SuperAdmin 여부 확인 (Verify Super Admin)
+     *
+     * @return the boolean
+     */
+    public boolean isSuperAdminCheck(String userAuthId) {
+       return userRepository.isSuperAdminCheck(Constants.AUTH_SUPER_ADMIN, userAuthId) == 1;
+    }
+
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     /**

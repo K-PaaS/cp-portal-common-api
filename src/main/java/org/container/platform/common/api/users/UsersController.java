@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -608,5 +609,20 @@ public class UsersController {
     }
 
 
+    /**
+     * SuperAdmin 여부 확인 (Verify Super Admin)
+     *
+     * @return the boolean
+     */
+    @Operation(summary = "SuperAdmin 여부 확인 (Verify Super Admin)", operationId = "isSuperAdminCheck")
+    @Parameters({
+            @Parameter(name = "userAuthId", description = "사용자 인증 아이디", required = true)
+    })
+    @GetMapping(value = "/users/{userAuthId:.+}/superadmin")
+    public Map isSuperAdminCheck(@PathVariable String userAuthId) {
+        Map <String, Object> response = new HashMap<>();
+        response.put("isSuperAdmin", userService.isSuperAdminCheck(userAuthId));
+        return response;
+    }
 }
 

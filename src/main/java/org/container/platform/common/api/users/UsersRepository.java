@@ -254,4 +254,7 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
     List<Users> getAllByClusterId(String clusterId);
 
     void deleteAllByClusterId(String clusterId);
+
+    @Query(value = "SELECT count(*) FROM cp_users WHERE user_type = :authSuperAdmin  AND user_auth_id = :userAuthId ;", nativeQuery = true)
+    Long isSuperAdminCheck(@Param("authSuperAdmin") String authSuperAdmin, @Param("userAuthId") String userAuthId);
 }
